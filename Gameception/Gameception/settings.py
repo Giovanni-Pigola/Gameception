@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'Assinante.apps.AssinanteConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -52,10 +53,12 @@ MIDDLEWARE_CLASSES = [
 
 ROOT_URLCONF = 'Gameception.urls'
 
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(PROJECT_ROOT, 'Templates').replace('\\','/'),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -106,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Brazil/East'
 
 USE_I18N = True
 
