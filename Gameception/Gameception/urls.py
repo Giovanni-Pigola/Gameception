@@ -20,7 +20,5 @@ from . import views
 urlpatterns = [
     url(r'^$', views.MainPage, name='MainPage'),
     url(r'^Assinante/', include('Assinante.urls')),
-    url(r'^admin/', include(admin.site.urls)), #adicionei a exibição dessas paginas
-    url(r'^your-name/', include('Assinante.urls')),
-    url(r'^thanks/', include('Assinante.urls')),
+    url(r'^admin/', include(admin.site.urls)),
 ]

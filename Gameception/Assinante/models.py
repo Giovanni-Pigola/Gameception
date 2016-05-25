@@ -12,7 +12,7 @@ class Assinante(models.Model):
     dAssinatura = models.ForeignKey('DadosAssinatura')
     dBanco = models.ForeignKey('DadosBancarios')
     #histJogos = models.ForeignKey('HistoricoJogos')
-    CPF = models.CharField(max_length=14)
+    CPF = models.CharField(max_length=11)
     nome = models.CharField(max_length=200)
     usuario = models.CharField(max_length=200)
     senha = models.CharField(max_length=200)
@@ -24,6 +24,7 @@ class Assinante(models.Model):
         return self.CPF # pra mostrar o cpf do assinante ao inves de 'Assinante object'
 
 class EnderecoAssinatura(models.Model):
+    assinatura = models.ForeignKey('Assinante')
     rua = models.CharField(max_length=200)
     numeroRua = models.IntegerField()
     complemento = models.CharField(max_length=200)
@@ -46,6 +47,7 @@ class DadosAssinatura(models.Model):
     #__str__ da problema se pegar ForeignKey. nao sei soluncionar
     # tentei fazer "return generosPessoais.getNome()" no __str__
     # mas nao rolou
+    assinatura = models.ForeignKey('Assinante')
     generosPessoais = models.ForeignKey('Genero')
     quantidade = models.IntegerField()
     #tipoMidia =
@@ -55,8 +57,9 @@ class DadosAssinatura(models.Model):
     processador = models.ForeignKey('Processadores')
     memVideo = models.IntegerField()
 
-    def __str__(self): #problemas
-        return self.generosPessoais
+    def __str__(self):
+        return str(self.pk)
+
 
 #class Pedido(models.Model): (deixei pra depois)
 #    quantia =
@@ -101,6 +104,7 @@ class Jogo(models.Model):
 
 
 class DadosBancarios(models.Model):
+    assinatura = models.ForeignKey('Assinante')
     numeroCartao = models.CharField(max_length=20)
     codigoSeguranca = models.IntegerField()
     nomeTitular = models.CharField(max_length=200)
@@ -109,6 +113,7 @@ class DadosBancarios(models.Model):
     def __str__(self):
         return self.numeroCartao
 #class HistoricoJogos(models.Model):
+    #assinatura = models.ForeignKey('Assinante')
 #    listaPedidos = models.ForeignKey('Pedido')
 
 #    def __str__(self): #problemas
