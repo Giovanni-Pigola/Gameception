@@ -26,8 +26,21 @@ def Assinatura(request):
 def InfoPagamento(request):
     if request.method == 'POST':
         form = InfoPagamentoForm(request.POST)
+        if form.is_valid():
+            numeroCartao = form.cleaned_data['numeroCartaoForm']
+            codigoSeguranca = form.cleaned_data['codigoSegurancaForm']
+            nomeTitular = form.cleaned_data['nomeTitularForm']
+            vencimento = form.cleaned_data['vencimentoForm']
+            #Agora precisa salvar os valores acima no banco de dados
     else:
         form = InfoPagamentoForm()
+        try:
+            form.fields["numeroCartaoForm"].initial = DadosBancarios.numeroCartao           #Ver isso direito
+            form.fields["codigoSegurancaForm"].initial = DadosBancarios.codigoSeguranca     #Ver isso direito
+            form.fields["nomeTitularForm"].initial = DadosBancarios.nomeTitular             #Ver isso direito
+            form.fields["vencimentoForm"].initial = DadosBancarios.vencimento               #Ver isso direito
+        except:     #Colocar o tipo do except
+            pass
     return render(request, 'Assinante/InfoPagamento.html', {'form': form})
 
 def ContatoAdmin(request):
