@@ -24,11 +24,21 @@ def Assinatura(request):
     return render(request, 'Assinante/Assinatura.html', {})
 
 def InfoPagamento(request):
-    return render(request, 'Assinante/InfoPagamento.html', {})
+    if request.method == 'POST':
+        form = InfoPagamentoForm(request.POST)
+    else:
+        form = InfoPagamentoForm()
+    return render(request, 'Assinante/InfoPagamento.html', {'form': form})
 
 def ContatoAdmin(request):
     return render(request, 'Assinante/ContatoAdmin.html', {})
 
 
-class AssinanteForm(forms.Form):
+class MinhaContaForm(forms.Form):
     your_name = forms.CharField(label='Your name', max_length=100, min_length=4)
+
+class InfoPagamentoForm(forms.Form):
+    numeroCartaoForm = forms.CharField(label='Numero do cartao', max_length=16, min_length=16)
+    codigoSegurancaForm = forms.CharField(label='Codigo de seguranca', max_length=3, min_length=3)
+    nomeTitularForm = forms.CharField(label='Nome do titular', max_length=200, min_length=2)
+    vencimentoForm = forms.CharField(label='Ano de vencimento', max_length=4, min_length=4)
