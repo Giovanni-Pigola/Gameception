@@ -108,8 +108,8 @@ class DadosBancarios(models.Model):
 
     def __str__(self):
         return self.numeroCartao
-class HistoricoJogos(models.Model):
-    listaPedidos = models.ForeignKey('Pedido')
+#class HistoricoJogos(models.Model):
+#    listaPedidos = models.ForeignKey('Pedido')
 
-    def __str__(self): #problemas
-        return listaPedidos
+#    def __str__(self): #problemas
+#        return listaPedidos
