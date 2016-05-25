@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Informacao de Pagamento</title>
 </head>
-<body>
 
+<body>
+<form action="/Assinante/InfoPagamento/" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="OK" />
+</form>
 </body>
+
 </html>
