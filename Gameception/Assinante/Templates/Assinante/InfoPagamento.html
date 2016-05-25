@@ -1,18 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Informacao de Pagamento</title>
-</head>
+{% extends "MainPage.html" %}
 
-<body>
+{% block content %}
 <form action="/Assinante/InfoPagamento/" method="post">
     {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-    </table>
+    {{ form.as_p }}
     <input type="submit" value="OK" />
 </form>
-</body>
+{% endblock %}
 
-</html>
