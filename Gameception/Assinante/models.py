@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.utils import timezone
 # SEMPRE QUE ADICIONAR ALGUMA CLASSE AQUI, LEMBRAR DE ADICIONAR EM ADMIN.PY
 # PARA PODER MANIPULAR QUALQUER DADO COMO ADM.
@@ -8,9 +9,9 @@ from django.utils import timezone
 # talvez exista um jeito melhor de organizar isso, mas veremos com o tempo
 
 class Assinante(models.Model):
-    endAssinatura = models.ForeignKey('EnderecoAssinatura')
-    dAssinatura = models.ForeignKey('DadosAssinatura')
-    dBanco = models.ForeignKey('DadosBancarios')
+    #endAssinatura = models.OneToOneField(EnderecoAssinatura)
+    #dAssinatura = models.OneToOneField(DadosAssinatura)
+    #dBanco = models.OneToOneField(DadosBancarios)
     #histJogos = models.ForeignKey('HistoricoJogos')
     CPF = models.CharField(max_length=11)
     nome = models.CharField(max_length=200)
@@ -24,7 +25,7 @@ class Assinante(models.Model):
         return self.CPF # pra mostrar o cpf do assinante ao inves de 'Assinante object'
 
 class EnderecoAssinatura(models.Model):
-    assinatura = models.ForeignKey('Assinante')
+    assinatura = models.OneToOneField(Assinante)
     rua = models.CharField(max_length=200)
     numeroRua = models.IntegerField()
     complemento = models.CharField(max_length=200)
@@ -47,8 +48,8 @@ class DadosAssinatura(models.Model):
     #__str__ da problema se pegar ForeignKey. nao sei soluncionar
     # tentei fazer "return generosPessoais.getNome()" no __str__
     # mas nao rolou
-    assinatura = models.ForeignKey('Assinante')
-    generosPessoais = models.ForeignKey('Genero')
+    assinatura = models.OneToOneField(Assinante)
+    generosPessoais = models.ManyToManyField('Genero')
     quantidade = models.IntegerField()
     #tipoMidia =
     atividade = models.BooleanField(default=False)
@@ -104,7 +105,7 @@ class Jogo(models.Model):
 
 
 class DadosBancarios(models.Model):
-    assinatura = models.ForeignKey('Assinante')
+    assinatura = models.OneToOneField(Assinante)
     numeroCartao = models.CharField(max_length=20)
     codigoSeguranca = models.IntegerField()
     nomeTitular = models.CharField(max_length=200)
