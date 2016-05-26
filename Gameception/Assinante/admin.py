@@ -9,7 +9,10 @@ from .models import Genero
 from .models import SistOp
 from .models import Processadores
 from .models import ChaveDownload
-#from .models import HistoricoJogos
+from .models import HistoricoJogos
+from .models import Pedido
+from .models import Jogo
+from .models import TipoMidia
 
 admin.site.register(Assinante)
 admin.site.register(EnderecoAssinatura)
@@ -19,4 +22,7 @@ admin.site.register(Genero)
 admin.site.register(SistOp)
 admin.site.register(Processadores)
 admin.site.register(ChaveDownload)
-#admin.site.register(HistoricoJogos)
+admin.site.register(HistoricoJogos)
+admin.site.register(Pedido)
+admin.site.register(Jogo)
+admin.site.register(TipoMidia)

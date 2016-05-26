@@ -41,17 +41,11 @@ class Genero(models.Model):
     def __str__(self):
         return self.nome
 
-    def getNome(): #isso ta ai por motivos explicados abaixo
-        return self.nome
-
 class DadosAssinatura(models.Model):
-    #__str__ da problema se pegar ForeignKey. nao sei soluncionar
-    # tentei fazer "return generosPessoais.getNome()" no __str__
-    # mas nao rolou
     assinatura = models.OneToOneField(Assinante)
     generosPessoais = models.ManyToManyField('Genero')
     quantidade = models.IntegerField()
-    #tipoMidia =
+    tipoMidia = models.ForeignKey('TipoMidia')
     atividade = models.BooleanField(default=False)
     sistOp = models.ForeignKey('SistOp') #mostra as opcoes de sistemas operacionais pra escolher
     memRAM = models.IntegerField()
@@ -62,16 +56,23 @@ class DadosAssinatura(models.Model):
         return str(self.pk)
 
 
-#class Pedido(models.Model): (deixei pra depois)
-#    quantia =
-#    jogosPedidos
-#    codigoRastreamento
-#    numeroPedido
-#    data =
-#    chaveDownload = models.ForeignKey('chaveDownload')
-#    tipoMidia =
+class Pedido(models.Model):
+    quantia = models.IntegerField()
+    jogosPedidos = models.ManyToManyField('Jogo')
+    codigoRastreamento = models.CharField(max_length=200)
+    data = models.CharField(max_length=200)
+    chaveDownload = models.ForeignKey('ChaveDownload')
+    tipoMidia = models.ForeignKey('TipoMidia')
 
-#class Jogo(): (deixei pra depois)
+    def __str__(self):
+        return str(self.pk)
+
+class TipoMidia(models.Model):
+    tipo = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.tipo
+
 #classe para as chaves, com a mesma ideia do sistOp ai em baixo
 class Processadores(models.Model):
     proc = models.CharField(max_length=200)
@@ -94,8 +95,7 @@ class SistOp(models.Model):
         return self.sistOp
 
 class Jogo(models.Model):
-    #listaGeneros=
-    #ranking=
+    listaGeneros= models.ManyToManyField(Genero)
     preco = models.IntegerField()
     disponivel = models.BooleanField(default=True)
     nome = models.CharField(max_length=200)
@@ -113,9 +113,10 @@ class DadosBancarios(models.Model):
 
     def __str__(self):
         return self.numeroCartao
-#class HistoricoJogos(models.Model):
-    #assinatura = models.ForeignKey('Assinante')
-#    listaPedidos = models.ForeignKey('Pedido')
 
-#    def __str__(self): #problemas
-#        return listaPedidos
+class HistoricoJogos(models.Model):
+    assinatura = models.OneToOneField('Assinante')
+    listaPedidos = models.ManyToManyField('Pedido')
+
+    def __str__(self):
+        return str(self.pk)
