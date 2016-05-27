@@ -15,17 +15,14 @@ class Assinante(models.Model):
     #histJogos = models.ForeignKey('HistoricoJogos')
     CPF = models.CharField(max_length=11)
     nome = models.CharField(max_length=200)
-    usuario = models.CharField(max_length=200)
-    senha = models.CharField(max_length=200)
-    email = models.CharField(max_length=200)
-    estaLogado = False  # A ser implementado
+    usuario = models.OneToOneField(User)
     # tirei os gets e sets por motivos de: ja existem as funções do django que fazem isso
     # se em algum momento for necessario a gente poe de volta
     def __str__(self): # chave primaria que vai ser mostrada no banco de dados das assinaturas
         return self.CPF # pra mostrar o cpf do assinante ao inves de 'Assinante object'
 
 class EnderecoAssinatura(models.Model):
-    assinatura = models.OneToOneField(Assinante)
+    assinatura = models.OneToOneField(User)
     rua = models.CharField(max_length=200)
     numeroRua = models.IntegerField()
     complemento = models.CharField(max_length=200)
@@ -42,7 +39,7 @@ class Genero(models.Model):
         return self.nome
 
 class DadosAssinatura(models.Model):
-    assinatura = models.OneToOneField(Assinante)
+    assinatura = models.OneToOneField(User)
     generosPessoais = models.ManyToManyField('Genero')
     quantidade = models.IntegerField()
     tipoMidia = models.ForeignKey('TipoMidia')
@@ -105,7 +102,7 @@ class Jogo(models.Model):
 
 
 class DadosBancarios(models.Model):
-    assinatura = models.OneToOneField(Assinante)
+    assinatura = models.OneToOneField(User)
     numeroCartao = models.CharField(max_length=20)
     codigoSeguranca = models.IntegerField()
     nomeTitular = models.CharField(max_length=200)
@@ -115,7 +112,7 @@ class DadosBancarios(models.Model):
         return self.numeroCartao
 
 class HistoricoJogos(models.Model):
-    assinatura = models.OneToOneField('Assinante')
+    assinatura = models.OneToOneField(User)
     listaPedidos = models.ManyToManyField('Pedido')
 
     def __str__(self):

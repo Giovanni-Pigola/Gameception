@@ -32,11 +32,12 @@
           {% if user.is_authenticated %}
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="../../Assinante">Assinante</a></li>
+                <li><a href="{% url 'Logout' %}">Logout</a></li> 
             </ul>
           {% else %}
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="../../Login">Login</a></li>                     <!--Acesso a Homepage-->
-            <li><a href="../../Cadastre-se">Cadastre-se</a></li>                 <!--Acesso a pagina de acervo-->
+            <li><a href="{% url 'Login' %}">Login</a></li>                     <!--Acesso a Homepage-->
+            <li><a href="{% url 'Cadastro' %}">Cadastre-se</a></li>                 <!--Acesso a pagina de acervo-->
           </ul>
           {% endif %}
         </div><!-- /.navbar-collapse -->

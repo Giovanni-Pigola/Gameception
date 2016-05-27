@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.contrib.auth import authenticate, login, logout
 from django import forms
+from django.contrib.auth.models import User
+
 from .models import Assinante
 from .models import EnderecoAssinatura
 from .models import DadosAssinatura
@@ -16,9 +19,6 @@ def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO D
 
 def Historico(request):
     return render(request, 'Assinante/Historico.html', {})
-
-def Cadastro(request):
-    return render(request, 'Assinante/Cadastro.html', {})
 
 def Assinatura(request):
     return render(request, 'Assinante/Assinatura.html', {})
@@ -46,6 +46,62 @@ def InfoPagamento(request):
 def ContatoAdmin(request):
     return render(request, 'Assinante/ContatoAdmin.html', {})
 
+def Cadastro(request):
+    registrado = False
+    if request.method == 'POST':
+        user_form = UserForm(data=request.POST)
+        #assinante_form = AssinanteForm(data=request.POST)
+        if user_form.is_valid(): #and assinante_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+            #assinante = assinante_form.save(commit=False)
+            #assinante.usuario = user
+            #assinante.save()
+            #print(assinante.usuario)
+            registrado = True
+        else:
+            print (user_form.errors, assinante_form.errors)
+    else:
+        user_form = UserForm()
+        #assinante_form = AssinanteForm()
+    return render(request,
+            'Assinante/Cadastro.html',
+            {'user_form': user_form, 'registrado': registrado} )
+
+def user_login(request):
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('/Assinante/')
+            else:
+                return HttpResponse(" account is disabled.")
+        else:
+            print ("Invalid login details: {0}, {1}".format(username, password))
+            return HttpResponse("Invalid login details supplied.")
+    else:
+        return render(request, 'Assinante/Login.html', {})
+
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect('/')
+
+class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password')
+
+class AssinanteForm(forms.ModelForm):
+    class Meta:
+        model = Assinante
+        fields = ('CPF', 'nome')
 
 class MinhaContaForm(forms.Form):
     your_name = forms.CharField(label='Your name', max_length=100, min_length=4)
