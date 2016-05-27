@@ -29,9 +29,16 @@
               <li><a href="../../InfoGeral/Sobre">Sobre</a></li>       <!--Adicionado caminho por /InfoGeral/ para filtragem inicial da URL-->
               <li><a href="../../InfoGeral/Contatos">Contatos</a></li> <!--Adicionado caminho por /InfoGeral/ para filtragem inicial da URL-->
           </ul>
+          {% if user.is_authenticated %}
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="../../Assinante">Assinante</a></li>
             </ul>
+          {% else %}
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="../../Login">Login</a></li>                     <!--Acesso a Homepage-->
+            <li><a href="../../Cadastre-se">Cadastre-se</a></li>                 <!--Acesso a pagina de acervo-->
+          </ul>
+          {% endif %}
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
