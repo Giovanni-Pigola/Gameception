@@ -50,24 +50,24 @@ def Cadastro(request):
     registrado = False
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
-        #assinante_form = AssinanteForm(data=request.POST)
-        if user_form.is_valid(): #and assinante_form.is_valid():
+        assinante_form = AssinanteForm(data=request.POST)
+        if user_form.is_valid() and assinante_form.is_valid():
             user = user_form.save()
             user.set_password(user.password)
             user.save()
-            #assinante = assinante_form.save(commit=False)
-            #assinante.usuario = user
-            #assinante.save()
-            #print(assinante.usuario)
+            assinante = assinante_form.save(commit=False)
+            assinante.usuario = user
+            assinante.save()
+            print(assinante.usuario)
             registrado = True
         else:
             print (user_form.errors, assinante_form.errors)
     else:
         user_form = UserForm()
-        #assinante_form = AssinanteForm()
+        assinante_form = AssinanteForm()
     return render(request,
             'Assinante/Cadastro.html',
-            {'user_form': user_form, 'registrado': registrado} )
+            {'user_form': user_form, 'registrado': registrado, 'assinante_form' : assinante_form} )
 
 def user_login(request):
 
