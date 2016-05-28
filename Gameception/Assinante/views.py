@@ -103,9 +103,6 @@ class AssinanteForm(forms.ModelForm):
         model = Assinante
         fields = ('CPF', 'nome')
 
-class MinhaContaForm(forms.Form):
-    your_name = forms.CharField(label='Your name', max_length=100, min_length=4)
-
 class InfoPagamentoForm(forms.Form):
     numeroCartaoForm = forms.CharField(label='Numero do cartao', max_length=16, min_length=16)
     codigoSegurancaForm = forms.CharField(label='Codigo de seguranca', max_length=3, min_length=3)
