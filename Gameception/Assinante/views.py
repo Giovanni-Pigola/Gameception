@@ -18,7 +18,10 @@ def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO D
 # no fim, nao precisava dos gets tambem, mas deixei la por enquanto
 
 def Historico(request):
-    return render(request, 'Assinante/Historico.html', {})
+    return render(request, 'MainPage2.html', {})
+
+def HistoricoPedido(request, num_pedido):
+    return render(request, 'Assinante/HistoricoPedido.html', {'num_pedido' : num_pedido, })
 
 def Assinatura(request):
     return render(request, 'Assinante/Assinatura.html', {})
