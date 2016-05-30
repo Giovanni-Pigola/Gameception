@@ -34,7 +34,7 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="">Home</a></li>                     <!--Acesso a Homepage-->
+            <li><a href="{% url 'Home' %}">Home</a></li>                     <!--Acesso a Homepage-->
             <li><a href="{% url 'Acervo' %}">Acervo</a></li>                 <!--Acesso a pagina de acervo-->
               <li><a href="{% url 'Sobre' %}">Sobre</a></li>       <!--Adicionado caminho por /InfoGeral/ para filtragem inicial da URL-->
               <li><a href="{% url 'Contatos' %}">Contatos</a></li> <!--Adicionado caminho por /InfoGeral/ para filtragem inicial da URL-->

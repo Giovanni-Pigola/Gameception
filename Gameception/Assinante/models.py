@@ -57,7 +57,7 @@ class Pedido(models.Model):
     quantia = models.IntegerField()
     jogosPedidos = models.ManyToManyField('Jogo')
     codigoRastreamento = models.CharField(max_length=200)
-    data = models.CharField(max_length=200)
+    data = models.DateField()
     chaveDownload = models.ForeignKey('ChaveDownload')
     tipoMidia = models.ForeignKey('TipoMidia')
 
@@ -104,7 +104,7 @@ class Jogo(models.Model):
 class DadosBancarios(models.Model):
     assinatura = models.OneToOneField(User)
     numeroCartao = models.CharField(max_length=20)
-    codigoSeguranca = models.IntegerField()
+    codigoSeguranca = models.CharField(max_length=3)
     nomeTitular = models.CharField(max_length=200)
     vencimento = models.CharField(max_length=200)
 

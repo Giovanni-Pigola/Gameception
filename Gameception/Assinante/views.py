@@ -27,24 +27,39 @@ def Assinatura(request):
     return render(request, 'Assinante/Assinatura.html', {})
 
 def InfoPagamento(request):
+    finalizado = False
     if request.method == 'POST':
-        form = InfoPagamentoForm(request.POST)
+        form = InfoPagamentoForm(request.POST)      #Se o request for POST o usuario esta submetendo o formulario
         if form.is_valid():
-            numeroCartao = form.cleaned_data['numeroCartaoForm']
+            numeroCartao = form.cleaned_data['numeroCartaoForm']        #Obtem os valores submetidos pelo usuario atraves do formulario
             codigoSeguranca = form.cleaned_data['codigoSegurancaForm']
             nomeTitular = form.cleaned_data['nomeTitularForm']
             vencimento = form.cleaned_data['vencimentoForm']
-            #Agora precisa salvar os valores acima no banco de dados
+            username = request.user.get_username()                  #Obtem o nome do usuario
+            user = User.objects.get(username=username)
+            try:
+                dados = DadosBancarios.objects.get(assinatura=user)     #Verifica se o usuario em questao ja possui dados bancarios
+            except:     #Colocar o tipo do except
+                dados = DadosBancarios.objects.create(assinatura=user)  #Se o usuario nao possuir dados bancarios ainda um objeto eh criado para armazena-los
+            dados.numeroCartao = numeroCartao                   #Armazena os dados obtidos do formulario no objeto dados
+            dados.codigoSeguranca = codigoSeguranca
+            dados.nomeTitular = nomeTitular
+            dados.vencimento = vencimento
+            dados.save()                            #Salva as alteracoes para o banco de dados
+            finalizado = True
     else:
         form = InfoPagamentoForm()
         try:
-            form.fields["numeroCartaoForm"].initial = DadosBancarios.numeroCartao           #Ver isso direito
-            form.fields["codigoSegurancaForm"].initial = DadosBancarios.codigoSeguranca     #Ver isso direito
-            form.fields["nomeTitularForm"].initial = DadosBancarios.nomeTitular             #Ver isso direito
-            form.fields["vencimentoForm"].initial = DadosBancarios.vencimento               #Ver isso direito
+            username = request.user.get_username()
+            user = User.objects.get(username=username)
+            dados = DadosBancarios.objects.get(assinatura=user)         #Verifica se o usuario ja possui dados bancarios
+            form.fields["numeroCartaoForm"].initial = dados.numeroCartao
+            form.fields["codigoSegurancaForm"].initial = dados.codigoSeguranca     #Se existem dados bancarios antigos, estes sao mostrados ao usuario
+            form.fields["nomeTitularForm"].initial = dados.nomeTitular             #permitindo a ele alterar alguns valores sem ter que reescrever os demais
+            form.fields["vencimentoForm"].initial = dados.vencimento
         except:     #Colocar o tipo do except
             pass
-    return render(request, 'Assinante/InfoPagamento.html', {'form': form})
+    return render(request, 'Assinante/InfoPagamento.html', {'form': form, 'finalizado': finalizado})
 
 def ContatoAdmin(request):
     return render(request, 'Assinante/ContatoAdmin.html', {})
@@ -111,3 +126,7 @@ class InfoPagamentoForm(forms.Form):
     codigoSegurancaForm = forms.CharField(label='Codigo de seguranca', max_length=3, min_length=3)
     nomeTitularForm = forms.CharField(label='Nome do titular', max_length=200, min_length=2)
     vencimentoForm = forms.CharField(label='Ano de vencimento', max_length=4, min_length=4)
+
+class ContatoAdminForm(forms.Form):
+    assunto = forms.CharField(label='Assunto')
+    menssagem = forms.CharField(label='Menssagem')
