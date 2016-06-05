@@ -8,28 +8,29 @@ from django.utils import timezone
 # pois o historico e os dados de assinatura dependem deles.
 # talvez exista um jeito melhor de organizar isso, mas veremos com o tempo
 
+TIPOS_MIDIA = (
+    ('FISICA', 'Fisica'),
+    ('DIGITAL', 'Digital'),
+)
+
 class Assinante(models.Model):
-    #endAssinatura = models.OneToOneField(EnderecoAssinatura)
-    #dAssinatura = models.OneToOneField(DadosAssinatura)
-    #dBanco = models.OneToOneField(DadosBancarios)
-    #histJogos = models.ForeignKey('HistoricoJogos')
     CPF = models.CharField(max_length=11)
     nome = models.CharField(max_length=200)
     usuario = models.OneToOneField(User)
     # tirei os gets e sets por motivos de: ja existem as funções do django que fazem isso
     # se em algum momento for necessario a gente poe de volta
     def __str__(self): # chave primaria que vai ser mostrada no banco de dados das assinaturas
-        return self.CPF # pra mostrar o cpf do assinante ao inves de 'Assinante object'
+        return self.usuario.username # pra mostrar o cpf do assinante ao inves de 'Assinante object'
 
 class EnderecoAssinatura(models.Model):
     assinatura = models.OneToOneField(User)
     rua = models.CharField(max_length=200)
-    numeroRua = models.IntegerField()
+    numeroRua = models.IntegerField(default = 0)
     complemento = models.CharField(max_length=200)
     CEP = models.CharField(max_length=9)
 
     def __str__(self):
-        return self.rua
+        return self.assinatura.username
 
 class Genero(models.Model):
     nome = models.CharField(max_length=200)
@@ -41,28 +42,31 @@ class Genero(models.Model):
 class DadosAssinatura(models.Model):
     assinatura = models.OneToOneField(User)
     generosPessoais = models.ManyToManyField('Genero')
-    quantidade = models.IntegerField()
-    tipoMidia = models.ForeignKey('TipoMidia')
+    quantidade = models.IntegerField(default=0)
+    precoPorJogo = models.IntegerField(default=0)
+    tipoMidia = models.CharField(max_length=10,choices=TIPOS_MIDIA,default='DIGITAL',)
     atividade = models.BooleanField(default=False)
-    sistOp = models.ForeignKey('SistOp') #mostra as opcoes de sistemas operacionais pra escolher
-    memRAM = models.IntegerField()
-    processador = models.ForeignKey('Processadores')
-    memVideo = models.IntegerField()
+    sistOp = models.ForeignKey('SistOp',null=True) #mostra as opcoes de sistemas operacionais pra escolher
+    memRAM = models.IntegerField(default=0)
+    processador = models.ForeignKey('Processadores',null=True)
+    memVideo = models.IntegerField(default=0)
 
     def __str__(self):
-        return str(self.pk)
+        return self.assinatura.username
 
 
 class Pedido(models.Model):
-    quantia = models.IntegerField()
+    historico = models.ForeignKey('HistoricoJogos')
     jogosPedidos = models.ManyToManyField('Jogo')
     codigoRastreamento = models.CharField(max_length=200)
     data = models.DateField()
-    chaveDownload = models.ForeignKey('ChaveDownload')
-    tipoMidia = models.ForeignKey('TipoMidia')
+    numero = models.IntegerField(default=0)
+    tipoMidia = models.CharField(max_length=10,
+        choices=TIPOS_MIDIA,
+        default='DIGITAL',)
 
     def __str__(self):
-        return str(self.pk)
+        return self.historico.assinatura.username + str(self.numero)
 
 class TipoMidia(models.Model):
     tipo = models.CharField(max_length=200)
@@ -78,6 +82,8 @@ class Processadores(models.Model):
         return self.proc
 
 class ChaveDownload(models.Model):
+    jogo = models.ForeignKey('Jogo')
+    pedido = models.ForeignKey('Pedido')
     chave = models.CharField(max_length=20)
 
     def __str__(self):
@@ -96,6 +102,8 @@ class Jogo(models.Model):
     preco = models.IntegerField()
     disponivel = models.BooleanField(default=True)
     nome = models.CharField(max_length=200)
+    nomeImagem = models.CharField(max_length=200)
+    tipoMidia = models.CharField(max_length=10,choices=TIPOS_MIDIA,default='DIGITAL',)
 
     def __str__(self):
             return self.nome;
@@ -109,11 +117,10 @@ class DadosBancarios(models.Model):
     vencimento = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.numeroCartao
+        return self.assinatura.username
 
 class HistoricoJogos(models.Model):
     assinatura = models.OneToOneField(User)
-    listaPedidos = models.ManyToManyField('Pedido')
 
     def __str__(self):
-        return str(self.pk)
+        return self.assinatura.username
