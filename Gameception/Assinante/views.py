@@ -100,6 +100,16 @@ def HistoricoPedido(request, num_pedido):
     context_dict['pode_antecessor'] = pode_antecessor
     context_dict['sucessor'] = sucessor
     context_dict['pode_sucessor'] = pode_sucessor
+
+    if pedido.tipoMidia == 'DIGITAL':
+        context_dict['digital'] = True
+        try:
+            context_dict['chaves'] = ChaveDownload.objects.filter(pedido=pedido)
+        except:
+            pass
+    else:
+        context_dict['digital'] = False
+
     return render(request, 'Assinante/HistoricoPedido.html', context_dict)
 
 def Assinatura(request):
