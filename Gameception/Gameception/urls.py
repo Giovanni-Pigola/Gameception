@@ -22,6 +22,6 @@ urlpatterns = [
     url(r'^Acervo', include("Acervo.urls")),
     url(r'^Assinante/', include('Assinante.urls')),
     url(r'^InfoGeral/', include('InfoGeral.urls')),  # Filtro inicial pra display de informações de Sobre e Contatos
-    url(r'^Home', include('InfoGeral.urls')), #botão de home direciona pra ca e mostra a homepage
+    url(r'^Home/', include('InfoGeral.urls')), #botão de home direciona pra ca e mostra a homepage
     url(r'^admin/', admin.site.urls),
 ]
