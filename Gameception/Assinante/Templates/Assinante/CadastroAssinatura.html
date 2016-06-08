@@ -2,28 +2,106 @@
 
 {% block content %}
 
-    {% if registrado %}
+<h1>Suas informações de Assinatura</h1>
 
-        A assinatura foi realizada com sucesso. <a href="{% url 'MinhaConta' %}">Voltar à sua página de assinante</a>
+  {% if registrado %}
+  Obrigado por registrar sua assinatura!
+  <a href="{% url 'MinhaConta' %}">voltar para a sua conta</a><br />
 
-    {% else %}
-        <form role="form" action="/Assinante/Assinatura/" method="post">
+  {% else %}
+  <form role="form" action="{% url 'CadastroAssinatura' %}" method="post">
+      {% csrf_token %}
+      <h2 class="form-signin-heading">Informações de Pagamento</h2>
+
+
+      Seus generos de preferencia:
+      <ul id="id_generosPessoais">
+
+        {% for par in pgeneros %}
+
+        <li class="form-control"><label for="id_generosPessoais_{{par.0.pk}}"><input id="id_generosPessoais_{{par.0.pk}}" name="generosPessoais" type="checkbox" value="{{par.0.pk}}" {% if par.1 %} checked {% endif %} /> {{par.0.nome}}</label></li>
+
+        {% endfor %}
+      </ul>
+
+      {{ endereco_form.non_field_errors }}
+      <div class="form-group" >
+          <p class="required">
+              <label for="id_quantidade">Quantidade:</label> <input class="form-control"  id="id_quantidade" name="quantidade" type="number" value="{%if atual_assinatura%}{{atual_assinatura.quantidade}}{%else%}0{%endif%}"  />
+          </p>
+      </div>
+      <div class="form-group" >
+          {{ endereco_form.complemento.errors }}
+          <p class="required">
+              <label for="id_precoPorJogo">PrecoPorJogo:</label> <input class="form-control"   id="id_precoPorJogo" name="precoPorJogo" type="number" value="{%if atual_assinatura%}{{atual_assinatura.precoPorJogo}}{%else%}0{%endif%}" />
+          </p>
+      </div>
+      <div class="form-group" >
+          {{ endereco_form.CEP.errors }}
+          <p class="required">
+            <label for="id_tipoMidia">TipoMidia:</label> <select class="form-control"  id="id_tipoMidia" name="tipoMidia">
+            <option value="FISICA">Fisica</option>
+            <option value="DIGITAL" selected="selected">Digital</option>
+            </select>
+          </p>
+      </div>
+      <div class="form-group" >
+          {{ endereco_form.CEP.errors }}
+          <p class="required">
+            <label for="id_sistOp">SistOp:</label> <select class="form-control" id="id_sistOp" name="sistOp">
+            <option value="" selected="selected">---------</option>
+
+            {% for pso in psos %}
+            <option value="{{pso.2}}" {%if pso.1%} selected="selected"{%endif%}>{{pso.0.sistOp}}</option>
+            {% endfor %}
+            </select>
+          </p>
+      </div>
+      <div class="form-group" >
+          {{ endereco_form.CEP.errors }}
+          <label for="id_memRAM">MemRAM:</label> <input class="form-control" id="id_memRAM" name="memRAM" type="number" value="{%if atual_assinatura%}{{atual_assinatura.memRAM}}{%else%}0{%endif%}" />
+      </div>
+      <div class="form-group" >
+          {{ endereco_form.CEP.errors }}
+          <label for="id_memVideo">MemVideo:</label> <input class="form-control"  id="id_memVideo" name="memVideo" type="number" value="{%if atual_assinatura%}{{atual_assinatura.memVideo}}{%else%}0{%endif%}" />
+      </div>
+
+      <div class="form-group" >
+          {{ endereco_form.CEP.errors }}
+          <label for="id_processador">Processador:</label> <select class="form-control" id="id_processador" name="processador">
+          <option value="" selected="selected">---------</option>
+
+          {% for pproc in pprocs %}
+          <option value="{{pproc.2}}" {%if pproc.1%} selected="selected"{%endif%}>{{pproc.0.proc}}</option>
+          {% endfor %}
+          </select>
+      </div>
+
+      <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+
+  {% endif %}
+
+{% endblock %}
+
+{% block contentz %}
+
+      <h1>Suas informações de endereço</h1>
+
+        {% if registrado %}
+        Obrigado por registrar seu endereço!
+        <a href="{% url 'MinhaConta' %}">voltar para a sua conta</a><br />
+
+        {% else %}
+        <strong>Registre seu endereço</strong><br />
+        <form id="user_form" method="post" action="{% url 'CadastroAssinatura' %}">
+
             {% csrf_token %}
-            <h2 class="form-signin-heading">Assinatura</h2>
-            <strong>Defina as opções de sua assinatura:</strong><br/><br/>
 
-            {{form.generosPessoaisForm}}
-            {{form.quantidadeForm}}
-            {{form.precoPorJogoForm}}
-            {{form.tipoMidiaForm}}
-            {{form.sistOpForm}}
-            {{form.memRAMForm}}
-            {{form.processadorForm}}
-            {{form.memVideoForm}}
+            {{ assinatura_form.as_p }}
 
-            <button type="submit" class="btn btn-default">Submit</button>
+            <input type="submit" name="submit" value="Register" />
         </form>
-
-    {% endif %}
+        {% endif %}
 
 {% endblock %}
