@@ -11,26 +11,25 @@
         {% else %}
 
         {% if atual_endereco %}
-        <strong>Registre seu endereço</strong><br />
+        <strong>Registre seu endereço:</strong><br/><br/>
         <form role="form" action="{% url 'CadastroEndereco' %}" method="post">
             {% csrf_token %}
-            <h2 class="form-signin-heading">Informações de Pagamento</h2>
             {{ endereco_form.non_field_errors }}
             <div class="form-group" >
                 <p class="required">
-                    <label for="id_rua">rua:</label> <input  class="form-control"  id="id_rua" name="rua" type="text" value={{atual_endereco.rua}} />
+                    <label for="id_rua">Rua:</label> <input  class="form-control"  id="id_rua" name="rua" type="text" value={{atual_endereco.rua}} />
                 </p>
             </div>
             <div class="form-group" >
                 {{ endereco_form.numeroRua.errors }}
                 <p class="required">
-                    <p><label for="id_numeroRua">numeroRua:</label> <input class="form-control"   id="id_numeroRua" name="numeroRua" type="text" value={{atual_endereco.numeroRua}} /></p>
+                    <p><label for="id_numeroRua">Numero da rua:</label> <input class="form-control"   id="id_numeroRua" name="numeroRua" type="text" value={{atual_endereco.numeroRua}} /></p>
                 </p>
             </div>
             <div class="form-group" >
                 {{ endereco_form.complemento.errors }}
                 <p class="required">
-                    <label for="id_complemento">complemento:</label> <input  class="form-control"  id="id_complemento" name="complemento" type="text" value={{atual_endereco.complemento}} />
+                    <label for="id_complemento">Complemento:</label> <input  class="form-control"  id="id_complemento" name="complemento" type="text" value={{atual_endereco.complemento}} />
                 </p>
             </div>
             <div class="form-group" >
