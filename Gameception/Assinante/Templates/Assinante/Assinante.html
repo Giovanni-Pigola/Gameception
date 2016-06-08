@@ -70,15 +70,15 @@
                   <strong>{{genero.nome}}</strong><br>
                 {% endfor %}
               processador <strong>{{assinatura.processador.proc}}</strong><br>
-              <a href="{% url 'CadastroAssinatura' %}"><button>Editar assinatura</button></a>
+              <a href="{% url 'Assinatura' %}"><button>Editar assinatura</button></a>
             {% else %}
               Você desativou sua assinatura...
-              <a href="{% url 'CadastroAssinatura' %}">Edite sua assinatura para reativá-la</a>
+              <a href="{% url 'Assinatura' %}">Edite sua assinatura para reativá-la</a>
             {% endif %}
           {% else %}
             {% if dados_completos %}
               Você ainda não completou sua assinatura... <br>
-              <a href="{% url 'CadastroAssinatura' %}">Diga-nos suas preferências e comece a receber jogos!</a>
+              <a href="{% url 'Assinatura' %}">Diga-nos suas preferências e comece a receber jogos!</a>
             {% else %}
               Você ainda não completou agumas informações... <br>
               {% if not tem_infos_pagamento %}
