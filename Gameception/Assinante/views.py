@@ -115,6 +115,9 @@ def HistoricoPedido(request, num_pedido):
 def Assinatura(request):
     return render(request, 'Assinante/Assinatura.html', {})
 
+def EditarCAdastro(request):
+    return render(request, 'Assinante/EditarCAdastro.html', {})
+
 def InfoPagamento(request):
     finalizado = False
     if request.method == 'POST':
