@@ -9,57 +9,52 @@
 </head>
 <body>
       <h1>HISTÓRICO</h1>
-      mostrar aqui o pedido {{num_pedido}} do assinante {{user.username}}<br>
-      {{pedido.data}}
-
-
-
+      <h2> Data de envio: {{pedido.data}}</h2>
 
       {% if digital %}
-      dig {{pedido.numero}}<br>
 
-      {% for chave in chaves %}
-      <div class="col-xs-12 col-sm-6 placeholder">
-        <div class="panel panel-primary">
-          <div class="panel-heading">
-            <h3 class="panel-title">{{chave.jogo.nome}}</h3>
+      <div class="row">
+        <div class="col-sm-6 col-md-4">
+          {% for chave in chaves %}
+          <div class="thumbnail">
+            <div class="caption">
+              <h3>{{chave.jogo.nome}}</h3>
+              <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{chave.jogo.img1}}/header.jpg?t={{chave.jogo.img2}}" alt="{{chave.jogo.nome}}" /><br>
+              <h4>Chave de Download: {{chave.chave}}</h4>
+            </div>
           </div>
-          <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{chave.jogo.img1}}/header.jpg?t={{chave.jogo.img2}}" alt="{{chave.jogo.nome}}" /><br>
-
-          Chave Download: {{chave.chave}}<br>
-
+          {% endfor %}
         </div>
       </div>
-      {% endfor %}
 
       {% else %}
-      fis <br>
-
-      {% for jogo in pedido.jogosPedidos.all %}
-
-      <div class="col-xs-12 col-sm-6 placeholder">
-        <div class="panel panel-primary">
-          <div class="panel-heading">
-            <h3 class="panel-title">{{jogo.nome}}</h3>
+      <div class="row">
+        <div class="col-sm-6 col-md-4">
+          {% for jogo in pedido.jogosPedidos.all %}
+          <div class="thumbnail">
+            <div class="caption">
+              <h3>{{jogo.nome}}</h3>
+              <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" alt="{{jogo.nome}}" /><br>
+            </div>
           </div>
-          <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" alt="{{chave.jogo.nome}}" /><br>
-          <div class="">
-          </div>
+          {% endfor %}
         </div>
       </div>
-
-      {% endfor %}
-      Código de rastreamento: {{pedido.codigoRastreamento}}<br>
+      <h4>Código de rastreamento: {{pedido.codigoRastreamento}}</h4><br>
 
       {% endif %}
-
 
 
       {% if pode_sucessor %}
-        <a href="/Assinante/Historico/{{sucessor}}/">Próxima entrega</a><br>
+      <form action="/Assinante/Historico/{{sucessor}}/">
+        <input type="submit" value="Próxima entrega" class="btn-primary">
+      </form>
       {% endif %}
+
       {% if pode_antecessor %}
-        <a href="/Assinante/Historico/{{antecessor}}/">Entrega anterior</a><br>
+      <form action="/Assinante/Historico/{{antecessor}}/">
+        <input type="submit" value="Entrega anterior" class="btn-primary">
+      </form>
       {% endif %}
 </body>
 </html>
