@@ -154,9 +154,13 @@ def CadastroEndereco(request):
             print (endereco_form.errors)
     else:
         endereco_form = EnderecoForm()
+        try:
+            atual_endereco = EnderecoAssinatura.objects.get(assinatura=request.user)
+        except:
+            atual_endereco = None
     return render(request,
             'Assinante/CadastroEndereco.html',
-            {'endereco_form': endereco_form, 'registrado': registrado} )
+            {'endereco_form': endereco_form, 'registrado': registrado, 'atual_endereco' : atual_endereco} )
 
 def CadastroAssinatura(request):
     registrado = False
@@ -253,6 +257,10 @@ class AssinanteForm(forms.ModelForm):
         fields = ('CPF', 'nome')
 
 class EnderecoForm(forms.ModelForm):
+    rua = forms.CharField(label='rua')
+    numeroRua = forms.CharField(label='numeroRua')
+    complemento = forms.CharField(label='complemento')
+    CEP = forms.CharField(label='CEP')
     class Meta:
         model = EnderecoAssinatura
         fields = ('rua', 'numeroRua', 'complemento', 'CEP')

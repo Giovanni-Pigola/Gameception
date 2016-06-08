@@ -13,7 +13,7 @@
       {{pedido.data}}
       {% for jogo in pedido.jogosPedidos.all %}
       <div class="">
-        <img src="/static/images/banners/{{jogo.nomeImagem}}.jpg" alt="{{jogo.nomeImagem}}" /><br>
+        <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" alt="{{jogo.nome}}" /><br>
         <div class="">
           {{jogo.nome}}
         </div>
