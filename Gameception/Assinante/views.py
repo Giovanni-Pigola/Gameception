@@ -53,6 +53,14 @@ def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO D
             context_dict['tem_pedido_para_mostrar'] = True
             pedido_recente = pedidos.order_by('-numero')[0]
             context_dict['pedido_recente'] = pedido_recente
+            if pedido_recente.tipoMidia == 'DIGITAL':
+                context_dict['digital'] = True
+                try:
+                    context_dict['chaves'] = ChaveDownload.objects.filter(pedido=pedido_recente)
+                except:
+                    pass
+            else:
+                context_dict['digital'] = False
         else:
             context_dict['tem_pedido_para_mostrar'] = False
     except:
@@ -68,7 +76,7 @@ def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO D
 # no fim, nao precisava dos gets tambem, mas deixei la por enquanto
 
 def Historico(request):
-    return render(request, 'Assinante/Historico.html', {})
+    return render(request, 'MainPage2.html', {})
 
 def HistoricoPedido(request, num_pedido):
     num = int(num_pedido)
@@ -92,13 +100,23 @@ def HistoricoPedido(request, num_pedido):
     context_dict['pode_antecessor'] = pode_antecessor
     context_dict['sucessor'] = sucessor
     context_dict['pode_sucessor'] = pode_sucessor
+
+    if pedido.tipoMidia == 'DIGITAL':
+        context_dict['digital'] = True
+        try:
+            context_dict['chaves'] = ChaveDownload.objects.filter(pedido=pedido)
+        except:
+            pass
+    else:
+        context_dict['digital'] = False
+
     return render(request, 'Assinante/HistoricoPedido.html', context_dict)
 
 def Assinatura(request):
     return render(request, 'Assinante/Assinatura.html', {})
 
 def EditarCadastro(request):
-    return render(request, 'Assinante/EditarCadastro.html', {})
+    return render(request, 'Assinante/EditarCAdastro.html', {})
 
 def InfoPagamento(request):
     finalizado = False
@@ -164,52 +182,101 @@ def CadastroEndereco(request):
             'Assinante/CadastroEndereco.html',
             {'endereco_form': endereco_form, 'registrado': registrado, 'atual_endereco' : atual_endereco} )
 
-def Assinatura(request):
+def CadastroAssinatura(request):
     registrado = False
+    context_dict = {}
     if request.method == 'POST':
-        form = DadosAssinaturaForm(request.POST)
-        if form.is_valid():
-            generosPessoais = form.cleaned_data['generosPessoaisForm']
-            quantidade = form.cleaned_data['quantidadeForm']
-            precoPorJogo = form.cleaned_data['precoPorJogoForm']
-            tipoMidia = form.cleaned_data['tipoMidiaForm']
-            sistOp = form.cleaned_data['sistOpForm']
-            memRAM = form.cleaned_data['memRAMForm']
-            processador = form.cleaned_data['processadorForm']
-            memVideo = form.cleaned_data['memVideoForm']
+        assinatura_form = DadosAssinaturaForm(data=request.POST)
+        if assinatura_form.is_valid():
+            nova_assinatura = assinatura_form.save(commit=False)
             try:
-                dados = DadosAssinatura.objects.get(assinatura=request.user)
+                atual_assinatura = DadosAssinatura.objects.get(assinatura=request.user)
             except:
-                dados = DadosAssinatura.objects.create(assinatura=request.user)
-            dados.generosPessoais = generosPessoais
-            dados.quantidade = quantidade
-            dados.precoPorJogo = precoPorJogo
-            dados.tipoMidia = tipoMidia
-            dados.sistOp = sistOp
-            dados.memRAM = memRAM
-            dados.processador = processador
-            dados.memVideo = memVideo
-            dados.atividade = True
-            dados.save()
-            registrado = True
-    else:
-        form = DadosAssinaturaForm()
-        try:
-            dados = DadosAssinatura.objects.get(assinatura=request.user)
-            #form.fields['generosPessoaisForm'].initial = dados.generosPessoais
-            form.fields['quantidadeForm'].initial = dados.quantidade
-            form.fields['precoPorJogoForm'].initial = dados.precoPorJogo
-            form.fields['tipoMidiaForm'].initial = dados.tipoMidia
-            form.fields['sistOpForm'].initial = dados.sistOp
-            form.fields['memRAMForm'].initial = dados.memRAM
-            form.fields['processadorForm'].initial = dados.processador
-            form.fields['memVideoForm'].initial = dados.memVideo
-        except:
-            pass
-    return render(request, 'Assinante/CadastroAssinatura.html', {'form': form, 'registrado': registrado})
+                atual_assinatura = DadosAssinatura.objects.create(assinatura=request.user)
 
-#def ContatoAdmin(request):
-#    return render(request, 'Assinante/ContatoAdmin.html', {})
+            atual_assinatura.generosPessoais.clear()
+            for genero in assinatura_form.cleaned_data['generosPessoais']:
+                atual_assinatura.generosPessoais.add(genero)
+
+            atual_assinatura.quantidade = nova_assinatura.quantidade
+            atual_assinatura.precoPorJogo = nova_assinatura.precoPorJogo
+            atual_assinatura.tipoMidia = nova_assinatura.tipoMidia
+            atual_assinatura.sistOp = nova_assinatura.sistOp
+            atual_assinatura.memRAM = nova_assinatura.memRAM
+            atual_assinatura.processador = nova_assinatura.processador
+            atual_assinatura.memVideo = nova_assinatura.memVideo
+            atual_assinatura.atividade = True
+            atual_assinatura.assinatura = request.user
+            atual_assinatura.save()
+            registrado = True
+        else:
+            print (assinatura_form.errors)
+
+    else:
+
+        assinatura_form = DadosAssinaturaForm()
+
+        generos = Genero.objects.all()
+        pgeneros = []
+
+        sos = SistOp.objects.all()
+        psos = []
+        indSo = 1
+
+        procs = Processadores.objects.all()
+        pprocs = []
+        indProcs = 1
+
+        try:
+            assinatura_atual = DadosAssinatura.objects.get(assinatura=request.user)
+            for genero in generos:
+                if genero in assinatura_atual.generosPessoais.all():
+                    pgeneros.append((genero,True))
+                else:
+                    pgeneros.append((genero,False))
+
+            for so in sos:
+                if so == assinatura_atual.sistOp:
+                    psos.append((so,True,indSo))
+                else:
+                    psos.append((so,False,indSo))
+                indSo += 1
+
+            for proc in procs:
+                if proc == assinatura_atual.processador:
+                    pprocs.append((proc,True,indProcs))
+                else:
+                    pprocs.append((proc,False,indProcs))
+                indProcs += 1
+
+        except:
+            for genero in generos:
+                pgeneros.append((genero, False))
+            for so in sos:
+                psos.append((so,False,indSo))
+                indSo += 1
+            for proc in procs:
+                pprocs.append((proc,False,indProcs))
+                indProcs += 1
+
+        context_dict['pgeneros'] = pgeneros
+        context_dict['psos'] = psos
+        context_dict['pprocs'] = pprocs
+
+    try:
+        atual_assinatura = DadosAssinatura.objects.get(assinatura=request.user)
+    except:
+        atual_assinatura = None
+
+    context_dict['registrado'] = registrado
+    context_dict['assinatura_form'] = assinatura_form
+    context_dict['atual_assinatura'] = atual_assinatura
+    return render(request,
+            'Assinante/CadastroAssinatura.html', context_dict)
+            #{'assinatura_form': assinatura_form, 'registrado': registrado, 'pgeneros' : pgeneros, 'atual_assinatura' : atual_assinatura} )
+
+def ContatoAdmin(request):
+    return render(request, 'Assinante/ContatoAdmin.html', {})
 
 def Cadastro(request):
     registrado = False
@@ -257,15 +324,11 @@ def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/')
 
-class DadosAssinaturaForm(forms.Form):
-    generosPessoaisForm = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=Genero.objects.all())
-    quantidadeForm = forms.IntegerField()
-    precoPorJogoForm = forms.IntegerField()
-    tipoMidiaForm = forms.ChoiceField(widget=forms.Select(), choices=(('FISICA', 'Fisica'),('DIGITAL', 'Digital'),))
-    sistOpForm = forms.ModelChoiceField(widget=forms.Select(), queryset=SistOp.objects.all())
-    memRAMForm = forms.IntegerField()
-    processadorForm = forms.ModelChoiceField(widget=forms.Select(), queryset=Processadores.objects.all())
-    memVideoForm = forms.IntegerField()
+class DadosAssinaturaForm(forms.ModelForm):
+    generosPessoais = forms.ModelMultipleChoiceField(queryset=Genero.objects.all(),widget=forms.CheckboxSelectMultiple())
+    class Meta:
+        model = DadosAssinatura
+        fields = ('generosPessoais', 'quantidade', 'precoPorJogo', 'tipoMidia', 'sistOp', 'memRAM', 'processador', 'memVideo')
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
