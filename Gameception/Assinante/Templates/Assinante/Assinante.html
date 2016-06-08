@@ -16,7 +16,24 @@
           </div>
           {% if tem_assinatura %}
             {% if tem_pedido_para_mostrar %}
+
               Entrega de {{pedido_recente.data}}
+
+              {% if digital %}
+              dig {{pedido_recente.numero}}<br>
+              {% for chave in chaves %}
+              <div class="">
+                <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{chave.jogo.img1}}/header.jpg?t={{chave.jogo.img2}}" alt="{{chave.jogo.nome}}" /><br>
+                <div class="">
+                  {{chave.jogo.nome}}<br>
+                  Chave Download: {{chave.chave}}<br>
+                </div>
+              </div>
+              {% endfor %}
+              <br><a href="/Assinante/Historico/{{pedido_recente.numero}}/">Ver minhas outras entregas</a>
+
+              {% else %}
+              fis <br>
               {% for jogo in pedido_recente.jogosPedidos.all %}
               <div class="">
                 <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" alt="{{jogo.nome}}" /><br>
@@ -25,7 +42,11 @@
                 </div>
               </div>
               {% endfor %}
-              <a href="/Assinante/Historico/{{pedido_recente.numero}}/">Ver minhas outras entregas</a>
+              Código de rastreamento: {{pedido_recente.codigoRastreamento}}<br>
+              <br><a href="/Assinante/Historico/{{pedido_recente.numero}}/">Ver minhas outras entregas</a>
+
+              {% endif %}
+
             {% else %}
               Você ainda não recebeu nenhum jogo! Aguarde sua primeira entrega em breve!
             {% endif %}
@@ -113,7 +134,7 @@
           <div class="panel-heading">
             <h3 class="panel-title">Outras opções</h3>
           </div>
-          <a href="{% url 'EditarCAdastro' %}">Editar informações de cadastro</a> <br>
+          <a href="#">Editar senha e nome de usuário</a> <br>
           <a href="{% url 'ContatoAdmin' %}">Contatar um administrador</a> <br>
         </div>
       </div>
