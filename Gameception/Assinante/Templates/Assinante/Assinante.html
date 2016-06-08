@@ -43,7 +43,9 @@
               </div>
               {% endfor %}
               Código de rastreamento: {{pedido_recente.codigoRastreamento}}<br>
-              <br><a href="/Assinante/Historico/{{pedido_recente.numero}}/">Ver minhas outras entregas</a>
+              <form action="/Assinante/Historico/{{pedido_recente.numero}}/">
+                <input type="submit" value="Ver minhas outras entregas" class="btn-primary">
+              </form>
 
               {% endif %}
 
@@ -70,22 +72,31 @@
                   <strong>{{genero.nome}}</strong><br>
                 {% endfor %}
               processador <strong>{{assinatura.processador.proc}}</strong><br>
-              <a href="{% url 'Assinatura' %}"><button>Editar assinatura</button></a>
+              <form action="{% url 'CadastroAssinatura' %}">
+                <input type="submit" value="Editar assinatura!" class="btn-primary">
+              </form>
             {% else %}
-              Você desativou sua assinatura...
-              <a href="{% url 'Assinatura' %}">Edite sua assinatura para reativá-la</a>
+              <form action="{% url 'CadastroAssinatura' %}">
+                <input type="submit" value="Edite sua assinatura para reativá-la!" class="btn-primary">
+              </form>
             {% endif %}
           {% else %}
             {% if dados_completos %}
               Você ainda não completou sua assinatura... <br>
-              <a href="{% url 'Assinatura' %}">Diga-nos suas preferências e comece a receber jogos!</a>
+              <form action="{% url 'CadastroAssinatura' %}">
+                <input type="submit" value="Diga-nos suas preferências e comece a receber jogos!" class="btn-primary">
+              </form>
             {% else %}
               Você ainda não completou agumas informações... <br>
               {% if not tem_infos_pagamento %}
-                <a href="{% url 'InfoPagamento' %}">Complete suas informações de pagamento</a><br>
+                <form action="{% url 'InfoPagamento' %}">
+                  <input type="submit" value="Complete suas informações de pagamento" class="btn-primary">
+                </form>
               {% endif %}
               {% if not tem_infos_endereco %}
-                <a href="{% url 'CadastroEndereco' %}">Complete suas informações de endereco</a><br>
+                <form action="{% url 'CadastroEndereco' %}">
+                  <input type="submit" value="Complete suas informações de endereco" class="btn-primary">
+                </form>
               {% endif %}
               Complete suas informações para poder fazer sua assinatura!
             {% endif %}
@@ -102,11 +113,14 @@
           {% if tem_infos_endereco %}
             <strong>Rua</strong> {{infos_endereco.rua}},{{infos_endereco.numeroRua}},{{infos_endereco.complemento}} <br>
             <strong>CEP</strong> {{infos_endereco.CEP}} <br>
-            <a href="{% url 'CadastroEndereco' %}"><button>Editar informações de endereco</button></a>
+            <form action="{% url 'CadastroEndereco' %}">
+              <input type="submit" value="Editar informações de endereco" class="btn-primary">
+            </form>
           {% else %}
           Você ainda não registrou suas informações de endereço...
-          <a href="{% url 'CadastroEndereco' %}"><br>
-            <button>Registrar suas informações de endereço!</button></a>
+            <form action="{% url 'CadastroEndereco' %}">
+              <input type="submit" value="Registrar suas informações de endereço!" class="btn-primary">
+            </form>
           {% endif %}
         </div>
       </div>
@@ -120,11 +134,14 @@
             <strong>Titular</strong> {{infos_pagamento.nomeTitular}} <br>
             <strong>Nº Cartao</strong> {{infos_pagamento.numeroCartao}} <br>
             <strong>Código de seguranca</strong> {{infos_pagamento.codigoSeguranca}} <br>
-            <a href="{% url 'InfoPagamento' %}"><button>Editar informações de pagamento</button></a>
+            <form action="{% url 'InfoPagamento' %}">
+              <input type="submit" value="Editar informações de pagamento" class="btn-primary">
+            </form>
           {% else %}
             Você ainda não registrou suas informações de pagamento...
-            <a href="{% url 'InfoPagamento' %}"><br>
-              <button>Registrar suas informações de pagamento!</button></a>
+              <form action="{% url 'InfoPagamento' %}">
+                <input type="submit" value="Registrar suas informações de pagamento!" class="btn-primary">
+              </form>
           {% endif %}
         </div>
       </div>
@@ -134,41 +151,10 @@
           <div class="panel-heading">
             <h3 class="panel-title">Outras opções</h3>
           </div>
-          <a href="{% url 'EditarCadastro' %}"><button>Editar informações de cadastro</button></a> <br><br>
-
-            <a href="" data-toggle="modal" data-target="#myModal"><button>Contatar um administrador</button></a>
-           <br>
+          <a href="#">Editar senha e nome de usuário</a> <br>
+          <a href="{% url 'ContatoAdmin' %}">Contatar um administrador</a> <br>
         </div>
       </div>
 
-
-    <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-              </div>
-              <div class="modal-body">
-                  <form>
-                      Nome:<br>
-                      <input type="text" name="firstname">
-                      <br>
-                      e-mail:<br>
-                      <input type="text" name="lastname">
-                      <br>
-                      Mensagem:<br>
-                      <textarea rows="4" cols="50"></textarea>
-                  </form>
-
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
-              </div>
-            </div>
-          </div>
-        </div>
     </div>
     {% endblock %}
