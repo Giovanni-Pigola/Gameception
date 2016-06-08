@@ -11,6 +11,24 @@
       <h1>HISTÓRICO</h1>
       mostrar aqui o pedido {{num_pedido}} do assinante {{user.username}}<br>
       {{pedido.data}}
+
+
+
+
+      {% if digital %}
+      dig {{pedido.numero}}<br>
+      {% for chave in chaves %}
+      <div class="">
+        <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{chave.jogo.img1}}/header.jpg?t={{chave.jogo.img2}}" alt="{{chave.jogo.nome}}" /><br>
+        <div class="">
+          {{chave.jogo.nome}}<br>
+          Chave Download: {{chave.chave}}<br>
+        </div>
+      </div>
+      {% endfor %}
+
+      {% else %}
+      fis <br>
       {% for jogo in pedido.jogosPedidos.all %}
       <div class="">
         <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" alt="{{jogo.nome}}" /><br>
@@ -19,6 +37,12 @@
         </div>
       </div>
       {% endfor %}
+      Código de rastreamento: {{pedido.codigoRastreamento}}<br>
+
+      {% endif %}
+
+
+
       {% if pode_sucessor %}
         <a href="/Assinante/Historico/{{sucessor}}/">Próxima entrega</a><br>
       {% endif %}
