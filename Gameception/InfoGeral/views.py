@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 def index(request):
-    return render (request, 'MainPage.html', {})
+    return render (request, 'Infos/Home.html', {})
 
 def Sobre(request):
     return render (request, 'Infos/Sobre.html', {})
