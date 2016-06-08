@@ -17,25 +17,37 @@
 
       {% if digital %}
       dig {{pedido.numero}}<br>
+
       {% for chave in chaves %}
-      <div class="">
-        <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{chave.jogo.img1}}/header.jpg?t={{chave.jogo.img2}}" alt="{{chave.jogo.nome}}" /><br>
-        <div class="">
-          {{chave.jogo.nome}}<br>
+      <div class="col-xs-12 col-sm-6 placeholder">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">{{chave.jogo.nome}}</h3>
+          </div>
+          <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{chave.jogo.img1}}/header.jpg?t={{chave.jogo.img2}}" alt="{{chave.jogo.nome}}" /><br>
+
           Chave Download: {{chave.chave}}<br>
+
         </div>
       </div>
       {% endfor %}
 
       {% else %}
       fis <br>
+
       {% for jogo in pedido.jogosPedidos.all %}
-      <div class="">
-        <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" alt="{{jogo.nome}}" /><br>
-        <div class="">
-          {{jogo.nome}}
+
+      <div class="col-xs-12 col-sm-6 placeholder">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">{{jogo.nome}}</h3>
+          </div>
+          <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" alt="{{chave.jogo.nome}}" /><br>
+          <div class="">
+          </div>
         </div>
       </div>
+
       {% endfor %}
       Código de rastreamento: {{pedido.codigoRastreamento}}<br>
 
