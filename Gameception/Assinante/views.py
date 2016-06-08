@@ -16,6 +16,7 @@ from .models import ChaveDownload
 from .models import HistoricoJogos
 from .models import Pedido
 from .models import Jogo
+from .models import TipoMidia
 
 
 def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO DA ERRO.
@@ -96,6 +97,9 @@ def HistoricoPedido(request, num_pedido):
 
 def Assinatura(request):
     return render(request, 'Assinante/Assinatura.html', {})
+
+def EditarCAdastro(request):
+    return render(request, 'Assinante/EditarCAdastro.html', {})
 
 def InfoPagamento(request):
     finalizado = False
