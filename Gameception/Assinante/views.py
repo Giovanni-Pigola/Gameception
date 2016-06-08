@@ -16,7 +16,6 @@ from .models import ChaveDownload
 from .models import HistoricoJogos
 from .models import Pedido
 from .models import Jogo
-from .models import TipoMidia
 
 
 def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO DA ERRO.
@@ -54,6 +53,14 @@ def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO D
             context_dict['tem_pedido_para_mostrar'] = True
             pedido_recente = pedidos.order_by('-numero')[0]
             context_dict['pedido_recente'] = pedido_recente
+            if pedido_recente.tipoMidia == 'DIGITAL':
+                context_dict['digital'] = True
+                try:
+                    context_dict['chaves'] = ChaveDownload.objects.filter(pedido=pedido_recente)
+                except:
+                    pass
+            else:
+                context_dict['digital'] = False
         else:
             context_dict['tem_pedido_para_mostrar'] = False
     except:
@@ -97,9 +104,6 @@ def HistoricoPedido(request, num_pedido):
 
 def Assinatura(request):
     return render(request, 'Assinante/Assinatura.html', {})
-
-def EditarCadastro(request):
-    return render(request, 'Assinante/EditarCadastro.html', {})
 
 def InfoPagamento(request):
     finalizado = False
