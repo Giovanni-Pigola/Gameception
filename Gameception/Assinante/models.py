@@ -68,12 +68,6 @@ class Pedido(models.Model):
     def __str__(self):
         return self.historico.assinatura.username + str(self.numero)
 
-class TipoMidia(models.Model):
-    tipo = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.tipo
-
 #classe para as chaves, com a mesma ideia do sistOp ai em baixo
 class Processadores(models.Model):
     proc = models.CharField(max_length=200)

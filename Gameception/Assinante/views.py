@@ -16,7 +16,6 @@ from .models import ChaveDownload
 from .models import HistoricoJogos
 from .models import Pedido
 from .models import Jogo
-from .models import TipoMidia
 
 
 def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO DA ERRO.
