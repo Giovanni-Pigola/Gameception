@@ -66,7 +66,6 @@ def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO D
     except:
         context_dict['tem_pedido_para_mostrar'] = False
 
-
     context_dict['dados_completos'] = context_dict['tem_infos_endereco'] and context_dict['tem_infos_pagamento']
 
 
@@ -156,124 +155,77 @@ def InfoPagamento(request):
 def CadastroEndereco(request):
     registrado = False
     if request.method == 'POST':
-        endereco_form = EnderecoForm(data=request.POST)
-        if endereco_form.is_valid():
-            novo_endereco = endereco_form.save(commit=False)
+        form = EnderecoForm(request.POST)
+        if form.is_valid():
+            rua = form.cleaned_data['ruaForm']
+            numeroRua = form.cleaned_data['numeroRuaForm']
+            complemento = form.cleaned_data['complementoForm']
+            CEP = form.cleaned_data['CEPForm']
             try:
-                atual_endereco = EnderecoAssinatura.objects.get(assinatura=request.user)
+                endereco = EnderecoAssinatura.objects.get(assinatura=request.user)
             except:
-                atual_endereco = EnderecoAssinatura.objects.create(assinatura=request.user)
-            atual_endereco.rua = novo_endereco.rua
-            atual_endereco.numeroRua = novo_endereco.numeroRua
-            atual_endereco.complemento = novo_endereco.complemento
-            atual_endereco.CEP = novo_endereco.CEP
-            atual_endereco.assinatura = request.user
-            atual_endereco.save()
+                endereco = EnderecoAssinatura.objects.create(assinatura=request.user)
+            endereco.rua = rua
+            endereco.numeroRua = numeroRua
+            endereco.complemento = complemento
+            endereco.CEP = CEP
+            endereco.save()
             registrado = True
-        else:
-            print (endereco_form.errors)
     else:
-        endereco_form = EnderecoForm()
+        form = EnderecoForm()
         try:
-            atual_endereco = EnderecoAssinatura.objects.get(assinatura=request.user)
+            endereco = EnderecoAssinatura.objects.get(assinatura=request.user)
+            form.fields['ruaForm'].initial = endereco.rua
+            form.fields['numeroRuaForm'].initial = endereco.numeroRua
+            form.fields['complementoForm'].initial = endereco.complemento
+            form.fields['CEPForm'].initial = endereco.CEP
         except:
-            atual_endereco = None
-    return render(request,
-            'Assinante/CadastroEndereco.html',
-            {'endereco_form': endereco_form, 'registrado': registrado, 'atual_endereco' : atual_endereco} )
+            pass
+    return render(request, 'Assinante/CadastroEndereco.html', {'form': form, 'registrado': registrado})
 
-def CadastroAssinatura(request):
+def Assinatura(request):
     registrado = False
-    context_dict = {}
     if request.method == 'POST':
-        assinatura_form = DadosAssinaturaForm(data=request.POST)
-        if assinatura_form.is_valid():
-            nova_assinatura = assinatura_form.save(commit=False)
+        form = DadosAssinaturaForm(request.POST)
+        if form.is_valid():
+            generosPessoais = form.cleaned_data['generosPessoaisForm']
+            quantidade = form.cleaned_data['quantidadeForm']
+            precoPorJogo = form.cleaned_data['precoPorJogoForm']
+            tipoMidia = form.cleaned_data['tipoMidiaForm']
+            sistOp = form.cleaned_data['sistOpForm']
+            memRAM = form.cleaned_data['memRAMForm']
+            processador = form.cleaned_data['processadorForm']
+            memVideo = form.cleaned_data['memVideoForm']
             try:
-                atual_assinatura = DadosAssinatura.objects.get(assinatura=request.user)
+                dados = DadosAssinatura.objects.get(assinatura=request.user)
             except:
-                atual_assinatura = DadosAssinatura.objects.create(assinatura=request.user)
-
-            atual_assinatura.generosPessoais.clear()
-            for genero in assinatura_form.cleaned_data['generosPessoais']:
-                atual_assinatura.generosPessoais.add(genero)
-
-            atual_assinatura.quantidade = nova_assinatura.quantidade
-            atual_assinatura.precoPorJogo = nova_assinatura.precoPorJogo
-            atual_assinatura.tipoMidia = nova_assinatura.tipoMidia
-            atual_assinatura.sistOp = nova_assinatura.sistOp
-            atual_assinatura.memRAM = nova_assinatura.memRAM
-            atual_assinatura.processador = nova_assinatura.processador
-            atual_assinatura.memVideo = nova_assinatura.memVideo
-            atual_assinatura.atividade = True
-            atual_assinatura.assinatura = request.user
-            atual_assinatura.save()
+                dados = DadosAssinatura.objects.create(assinatura=request.user)
+            dados.generosPessoais = generosPessoais
+            dados.quantidade = quantidade
+            dados.precoPorJogo = precoPorJogo
+            dados.tipoMidia = tipoMidia
+            dados.sistOp = sistOp
+            dados.memRAM = memRAM
+            dados.processador = processador
+            dados.memVideo = memVideo
+            dados.atividade = True
+            dados.save()
             registrado = True
-        else:
-            print (assinatura_form.errors)
-
     else:
-
-        assinatura_form = DadosAssinaturaForm()
-
-        generos = Genero.objects.all()
-        pgeneros = []
-
-        sos = SistOp.objects.all()
-        psos = []
-        indSo = 1
-
-        procs = Processadores.objects.all()
-        pprocs = []
-        indProcs = 1
-
+        form = DadosAssinaturaForm()
         try:
-            assinatura_atual = DadosAssinatura.objects.get(assinatura=request.user)
-            for genero in generos:
-                if genero in assinatura_atual.generosPessoais.all():
-                    pgeneros.append((genero,True))
-                else:
-                    pgeneros.append((genero,False))
-
-            for so in sos:
-                if so == assinatura_atual.sistOp:
-                    psos.append((so,True,indSo))
-                else:
-                    psos.append((so,False,indSo))
-                indSo += 1
-
-            for proc in procs:
-                if proc == assinatura_atual.processador:
-                    pprocs.append((proc,True,indProcs))
-                else:
-                    pprocs.append((proc,False,indProcs))
-                indProcs += 1
-
+            dados = DadosAssinatura.objects.get(assinatura=request.user)
+            form.fields['generosPessoaisForm'].initial = dados.generosPessoais.all()
+            form.fields['quantidadeForm'].initial = dados.quantidade
+            form.fields['precoPorJogoForm'].initial = dados.precoPorJogo
+            form.fields['tipoMidiaForm'].initial = dados.tipoMidia
+            form.fields['sistOpForm'].initial = dados.sistOp
+            form.fields['memRAMForm'].initial = dados.memRAM
+            form.fields['processadorForm'].initial = dados.processador
+            form.fields['memVideoForm'].initial = dados.memVideo
         except:
-            for genero in generos:
-                pgeneros.append((genero, False))
-            for so in sos:
-                psos.append((so,False,indSo))
-                indSo += 1
-            for proc in procs:
-                pprocs.append((proc,False,indProcs))
-                indProcs += 1
-
-        context_dict['pgeneros'] = pgeneros
-        context_dict['psos'] = psos
-        context_dict['pprocs'] = pprocs
-
-    try:
-        atual_assinatura = DadosAssinatura.objects.get(assinatura=request.user)
-    except:
-        atual_assinatura = None
-
-    context_dict['registrado'] = registrado
-    context_dict['assinatura_form'] = assinatura_form
-    context_dict['atual_assinatura'] = atual_assinatura
-    return render(request,
-            'Assinante/CadastroAssinatura.html', context_dict)
-            #{'assinatura_form': assinatura_form, 'registrado': registrado, 'pgeneros' : pgeneros, 'atual_assinatura' : atual_assinatura} )
+            pass
+    return render(request, 'Assinante/CadastroAssinatura.html', {'form': form, 'registrado': registrado})
 
 def ContatoAdmin(request):
     return render(request, 'Assinante/ContatoAdmin.html', {})
@@ -324,11 +276,20 @@ def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/')
 
-class DadosAssinaturaForm(forms.ModelForm):
-    generosPessoais = forms.ModelMultipleChoiceField(queryset=Genero.objects.all(),widget=forms.CheckboxSelectMultiple())
-    class Meta:
-        model = DadosAssinatura
-        fields = ('generosPessoais', 'quantidade', 'precoPorJogo', 'tipoMidia', 'sistOp', 'memRAM', 'processador', 'memVideo')
+class DadosAssinaturaForm(forms.Form):
+    generosPessoaisForm = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=Genero.objects.all())
+    quantidadeForm = forms.IntegerField(min_value=1)
+    precoPorJogoForm = forms.IntegerField(min_value=1)
+    tipoMidiaForm = forms.ChoiceField(widget=forms.Select(), choices=(('FISICA', 'Fisica'),('DIGITAL', 'Digital'),))
+    sistOpForm = forms.ModelChoiceField(widget=forms.Select(), queryset=SistOp.objects.all())
+    memRAMForm = forms.IntegerField(min_value=1)
+    processadorForm = forms.ModelChoiceField(widget=forms.Select(), queryset=Processadores.objects.all())
+    memVideoForm = forms.IntegerField(min_value=1)
+    def __init__(self, *args, **kwargs):
+        super(DadosAssinaturaForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if(field != self.fields['generosPessoaisForm']):
+                field.widget.attrs['class'] = 'form-control'
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -341,14 +302,15 @@ class AssinanteForm(forms.ModelForm):
         model = Assinante
         fields = ('CPF', 'nome')
 
-class EnderecoForm(forms.ModelForm):
-    rua = forms.CharField(label='rua')
-    numeroRua = forms.CharField(label='numeroRua')
-    complemento = forms.CharField(label='complemento')
-    CEP = forms.CharField(label='CEP')
-    class Meta:
-        model = EnderecoAssinatura
-        fields = ('rua', 'numeroRua', 'complemento', 'CEP')
+class EnderecoForm(forms.Form):
+    ruaForm = forms.CharField(label='rua', max_length=200)
+    numeroRuaForm = forms.IntegerField(label='numeroRua', min_value=1)
+    complementoForm = forms.CharField(label='complemento', max_length=200)
+    CEPForm = forms.CharField(label='CEP', min_length=8, max_length=8)
+    def __init__(self, *args, **kwargs):
+        super(EnderecoForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
 
 class InfoPagamentoForm(forms.Form):
     numeroCartaoForm = forms.CharField(label='Numero do cartao', max_length=16, min_length=16)
