@@ -8,7 +8,53 @@
     <title>Title</title>
 </head>
 <body>
-<h1>ACERVO</h1>
+  <h2>Categorias:</h2>
+  {% for genero in generos %}
+  <a href="../../../Acervo/{{genero.nome}}">{{genero.nome}}</a>
+  {% endfor %}
+  {% if not filtrado %}
+  {% for jogo in jogos %}
+  <div class="row" style="float: left; padding: 20px">
+    <div>
+      <div class="thumbnail">
+        <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" style="width: 460px; height: 215px">
+        <div class="caption">
+          <h3>{{ jogo.nome }}</h3>
+          <p>Gêneros: </p>
+          {% for genero in jogo.listaGeneros.all %}
+          <p>{{ genero.nome }}</p>
+          {% endfor %}
+          <p>x y z</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  {% else %}
+   {% for jogo in jogos %}
+    {% for genero in jogo.listaGeneros.all %}
+    {% if genero.nome == gen %}
+   <div class="row" style="float: left; padding: 20px">
+    <div>
+      <div class="thumbnail">
+        <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" style="width: 460px; height: 215px">
+        <div class="caption">
+          <h3>{{ jogo.nome }}</h3>
+          <p>Gêneros: </p>
+          {% for genero in jogo.listaGeneros.all %}
+          <p>{{ genero.nome }}</p>
+          {% endfor %}
+          <p>x y z</p>
+        </div>
+      </div>
+    </div>
+   </div>
+      {% endif %}
+     {% endfor %}
+    {% endfor %}
+   {% endif %}
+
+
 </body>
 </html>
 {% endblock %}
