@@ -75,44 +75,57 @@ def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO D
 # no fim, nao precisava dos gets tambem, mas deixei la por enquanto
 
 def Historico(request):
-    return render(request, 'MainPage2.html', {})
+    return render(request, 'Assinante/Historico.html', {})
 
 def HistoricoPedido(request, num_pedido):
-    num = int(num_pedido)
+    var = int(num_pedido)
+    num1 = int(2*var-1)
+    num2 = int(2*var)
     historico = HistoricoJogos.objects.get(assinatura=request.user)
     pedidos = Pedido.objects.filter(historico=historico)
     try:
-        pedido = Pedido.objects.get(historico=historico,numero=num)
+        pedido1 = Pedido.objects.get(historico=historico,numero=num1)
     except:
-        pedido = None
-    print(pedido)
-    antecessor = num -1
+        pedido1 = None
+    try:
+        pedido2 = Pedido.objects.get(historico=historico,numero=num2)
+    except:
+        pedido2 = None
+    print(pedido1)
+    print(pedido2)
+    antecessor = var - 1
     pode_antecessor = True
-    sucessor = num + 1
+    sucessor = var + 1
     pode_sucessor = True
-    if num >= len(pedidos) - 1:
+    if var >= len(pedidos) - 1:
         pode_sucessor = False
-    if num <= 0:
+    if var <= 0:
         pode_antecessor = False
-    context_dict = {'num_pedido' : num_pedido, 'pedido' : pedido}
+    context_dict = {'num_pedido': num_pedido, 'pedido1': pedido1, 'pedido2': pedido2}
     context_dict['antecessor'] = antecessor
     context_dict['pode_antecessor'] = pode_antecessor
     context_dict['sucessor'] = sucessor
     context_dict['pode_sucessor'] = pode_sucessor
-
-    if pedido.tipoMidia == 'DIGITAL':
-        context_dict['digital'] = True
-        try:
-            context_dict['chaves'] = ChaveDownload.objects.filter(pedido=pedido)
-        except:
-            pass
-    else:
-        context_dict['digital'] = False
+    if pedido1 != None:
+        if pedido1.tipoMidia == 'DIGITAL':
+            context_dict['digital1'] = True
+            try:
+                context_dict['chaves1'] = ChaveDownload.objects.filter(pedido=pedido1)
+            except:
+                pass
+        else:
+            context_dict['digital1'] = False
+    if pedido2 != None:
+        if pedido2.tipoMidia == 'DIGITAL':
+            context_dict['digital2'] = True
+            try:
+                context_dict['chaves2'] = ChaveDownload.objects.filter(pedido=pedido2)
+            except:
+                pass
+        else:
+            context_dict['digital2'] = False
 
     return render(request, 'Assinante/HistoricoPedido.html', context_dict)
-
-def Assinatura(request):
-    return render(request, 'Assinante/Assinatura.html', {})
 
 def EditarCadastro(request):
     return render(request, 'Assinante/EditarCAdastro.html', {})
@@ -225,7 +238,7 @@ def Assinatura(request):
             form.fields['memVideoForm'].initial = dados.memVideo
         except:
             pass
-    return render(request, 'Assinante/CadastroAssinatura.html', {'form': form, 'registrado': registrado})
+    return render(request, 'Assinante/Assinatura.html', {'form': form, 'registrado': registrado})
 
 def ContatoAdmin(request):
     return render(request, 'Assinante/ContatoAdmin.html', {})
