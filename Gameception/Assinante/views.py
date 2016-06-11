@@ -83,6 +83,11 @@ def Historico(request):
 def GerenciarEntregas(request):
     if not request.user.is_staff:
         return HttpResponseRedirect("/Assinante/")
+
+    if request.method == 'POST':
+        for assin in DadosAssinatura.objects.filter(atividade=True):
+            pass
+
     context_dict = {}
     try:
         ultimaEntrega = Pedido.objects.order_by('-data')[0]
@@ -92,6 +97,7 @@ def GerenciarEntregas(request):
     context_dict['ultimaEntrega'] = ultimaEntrega
     context_dict['delta'] = datetime.datetime.now().date() - ultimaEntrega.data
     return render(request, 'Assinante/GerenciarEntregas.html', context_dict)
+
 
 def HistoricoPedido(request, num_pedido):
     var = int(num_pedido)
