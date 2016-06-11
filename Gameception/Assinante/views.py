@@ -77,6 +77,12 @@ def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO D
 def Historico(request):
     return render(request, 'Assinante/Historico.html', {})
 
+def GerenciarEntregas(request):
+    if not request.user.is_staff:
+        return HttpResponseRedirect("/Assinante/")
+    else:
+        return render(request, 'Assinante/Historico.html', {})
+
 def HistoricoPedido(request, num_pedido):
     var = int(num_pedido)
     num1 = int(2*var-1)
