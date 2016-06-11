@@ -63,6 +63,9 @@
              Bem vindo {{user.username}}! <br>
              <a href="{% url 'MinhaConta' %}">Minha Conta</a> <br>
              <a href="{% url 'Historico' %}">Meu Historico de Jogos</a> <br>
+             {% if user.is_staff %}
+              <br><a href="{% url 'GerenciarEntregas' %}"><button class="btn-primary">Gerenciar entregas</button></a>
+             {%endif%}
            </div>
           {% endif %}
           {% block side %}{% endblock %}
