@@ -1,3 +1,6 @@
+import random
+import datetime
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -80,8 +83,15 @@ def Historico(request):
 def GerenciarEntregas(request):
     if not request.user.is_staff:
         return HttpResponseRedirect("/Assinante/")
-    else:
-        return render(request, 'Assinante/Historico.html', {})
+    context_dict = {}
+    try:
+        ultimaEntrega = Pedido.objects.order_by('-data')[0]
+    except:
+        ultimaEntrega = None
+    print("X",ultimaEntrega.data)
+    context_dict['ultimaEntrega'] = ultimaEntrega
+    context_dict['delta'] = datetime.datetime.now().date() - ultimaEntrega.data
+    return render(request, 'Assinante/GerenciarEntregas.html', context_dict)
 
 def HistoricoPedido(request, num_pedido):
     var = int(num_pedido)
