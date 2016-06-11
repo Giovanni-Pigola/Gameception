@@ -100,6 +100,22 @@ def GerenciarEntregas(request):
 
 
 def HistoricoPedido(request, num_pedido):
+
+    context_dict = {}
+    numPedido = int(num_pedido)
+    pedido = Pedido.objects.get(historico=(HistoricoJogos.objects.get(assinatura=request.user)),numero=numPedido)
+    context_dict['pedido'] = pedido
+    numPedidos = len(Pedido.objects.all())
+    if pedido.tipoMidia == 'DIGITAL':
+        context_dict['chaves'] = ChaveDownload.objects.filter(pedido=pedido)
+        context_dict['digital'] = True
+    if numPedido > 0:
+        context_dict['anterior'] = numPedido - 1
+        context_dict['temAnterior'] = True
+    if numPedido < numPedidos - 1:
+        context_dict['proximo'] = numPedido + 1
+
+    ''' Não estava funcionando para mostrar pedidos degitais
     var = int(num_pedido)
     num1 = int(2*var-1)
     num2 = int(2*var)
@@ -146,7 +162,7 @@ def HistoricoPedido(request, num_pedido):
                 pass
         else:
             context_dict['digital2'] = False
-
+    '''
     return render(request, 'Assinante/HistoricoPedido.html', context_dict)
 
 def EditarCadastro(request):
