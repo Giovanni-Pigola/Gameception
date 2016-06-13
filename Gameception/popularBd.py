@@ -1,11 +1,12 @@
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Gameception.settings')
 
-import django
+import django, random
 django.setup()
 
 from Assinante.models import Jogo, Genero
 
+RANDOMIZE = True
 
 def populate():
 
@@ -19,6 +20,69 @@ def populate():
     add_genero("MMO")
     add_genero("RPG")
     add_genero("Simulação")
+
+    add_jogo(nome="PAYDAY 2"
+        ,urlSteam="http://cdn.akamai.steamstatic.com/steam/apps/218620/header.jpg?t=1464633612"
+        ,generos=[ "Ação", "RPG"]
+        ,disponivel=True,tipoMidia="DIGITAL"
+        ,ram=2000
+        ,preco=37)
+
+    add_jogo(nome="Slime Rancher"
+        ,urlSteam="http://cdn.akamai.steamstatic.com/steam/apps/433340/header.jpg?t=1461117618"
+        ,generos=[ "Ação", "Aventura", "Indie", "Simulação"]
+        ,disponivel=True,tipoMidia="DIGITAL"
+        ,ram=2000
+        ,preco=37)
+
+    add_jogo(nome="Doom"
+        ,urlSteam="http://cdn.akamai.steamstatic.com/steam/apps/379720/header.jpg?t=1465836895"
+        ,generos=[ "Ação"]
+        ,disponivel=True,tipoMidia="DIGITAL"
+        ,ram=8000
+        ,preco=230)
+
+    add_jogo(nome="Tabletop Simulator"
+        ,urlSteam="http://cdn.akamai.steamstatic.com/steam/apps/286160/header.jpg?t=1464993996"
+        ,generos=[ "Casual", "Indie", "RPG", "Simulação", "Estratégia"]
+        ,disponivel=True,tipoMidia="DIGITAL"
+        ,ram=4000
+        ,preco=37)
+
+    add_jogo(nome="Axiom Verge"
+        ,urlSteam="http://cdn.akamai.steamstatic.com/steam/apps/332200/header.jpg?t=1457296051"
+        ,generos=[ "Aventura", "Ação", "Indie"]
+        ,disponivel=True,tipoMidia="DIGITAL"
+        ,ram=500
+        ,preco=37)
+
+    add_jogo(nome="LEGO Worlds"
+        ,urlSteam="http://cdn.akamai.steamstatic.com/steam/apps/332310/header.jpg?t=1465839585"
+        ,generos=[ "Aventura"]
+        ,disponivel=True,tipoMidia="DIGITAL"
+        ,ram=2000
+        ,preco=28)
+
+    add_jogo(nome="A Story About My Uncle"
+        ,urlSteam="http://cdn.akamai.steamstatic.com/steam/apps/278360/header.jpg?t=1447360357"
+        ,generos=[ "Aventura", "Casual", "Indie"]
+        ,disponivel=True,tipoMidia="DIGITAL"
+        ,ram=2000
+        ,preco=5)
+
+    add_jogo(nome="Rust"
+        ,urlSteam="http://cdn.akamai.steamstatic.com/steam/apps/252490/header.jpg?t=1455671960"
+        ,generos=[ "Ação", "Aventura", "Indie", "MMO", "RPG"]
+        ,disponivel=True,tipoMidia="DIGITAL"
+        ,ram=8000
+        ,preco=37)
+
+    add_jogo(nome="GROOVY"
+        ,urlSteam="http://cdn.akamai.steamstatic.com/steam/apps/372490/header.jpg?t=1465137589"
+        ,generos=[ "Ação", "Aventura", "Indie", "Corrida", "Esportes", "Estratégia"]
+        ,disponivel=True,tipoMidia="DIGITAL"
+        ,ram=4000
+        ,preco=16)
 
     add_jogo(nome="POPixel"
         ,urlSteam="http://cdn.akamai.steamstatic.com/steam/apps/485560/header.jpg?t=1464998779"
@@ -162,10 +226,14 @@ def add_jogo(nome,urlSteam,generos,disponivel,tipoMidia,ram,preco):
     j.nome = nome
     j.img1 = urlSteam[45:51]
     j.img2 = urlSteam[65:75]
-    j.disponivel = disponivel
     j.preco = preco
-    j.tipoMidia = tipoMidia
     j.memRAM = ram
+    if not RANDOMIZE:
+        j.disponivel = disponivel
+        j.tipoMidia = tipoMidia
+    else:
+        j.disponivel = random.choice([True,True,True,False])
+        j.tipoMidia = random.choice(["FISICA","DIGITAL","DIGITAL"])
     j.save()
     for genero in generos:
         try:
