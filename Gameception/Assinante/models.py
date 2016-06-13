@@ -99,6 +99,7 @@ class Jogo(models.Model):
     img1 = models.CharField(max_length=200)
     img2 = models.CharField(max_length=200)
     tipoMidia = models.CharField(max_length=10,choices=TIPOS_MIDIA,default='DIGITAL',)
+    memRAM = models.IntegerField(default=0)
 
     def __str__(self):
             return self.nome;

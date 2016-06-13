@@ -23,6 +23,11 @@ from .models import Jogo
 
 def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO DA ERRO.
     #endereco = EnderecoAssinatura.objects.get(id=1) #peguei um endereco de assinatura que registrei no bd, so pra teste
+    if request.method == 'POST':
+        assin = DadosAssinatura.objects.get(assinatura=request.user)
+        assin.atividade = not assin.atividade
+        assin.save()
+
     context_dict = {}
 
     try:
@@ -80,27 +85,106 @@ def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO D
 def Historico(request):
     return render(request, 'Assinante/Historico.html', {})
 
+
+##################################################
+
+def randomString(n):
+    alfa = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
+    ret = ""
+    for i in range(n):
+        ret += alfa[random.randint(0,len(alfa)-1)]
+    return ret
+
+
 def GerenciarEntregas(request):
     if not request.user.is_staff:
         return HttpResponseRedirect("/Assinante/")
 
     if request.method == 'POST':
-        for assin in DadosAssinatura.objects.filter(atividade=True):
-            pass
+        a = DadosAssinatura.objects.filter(atividade=True)
+        for assin in a:
+            #preencher campos exceto listaJogos
+            userAssin = assin.assinatura
+            novoPedido = Pedido()
+            novoPedido.historico = HistoricoJogos.objects.get_or_create(assinatura=userAssin)[0]
+            novoPedido.tipoMidia = assin.tipoMidia
+            if novoPedido.tipoMidia == "FISICA":
+                novoPedido.codigoRastreamento = randomString(16)
+            else:
+                novoPedido.codigoRastreamento = ""
+            novoPedido.data = datetime.datetime.now().date()
+            try:
+                pedidosAssin = Pedido.objects.filter(historico=novoPedido.historico)
+            except:
+                pedidosAssin = None
+            try:
+                novoPedido.numero = len(pedidosAssin)
+            except:
+                novoPedido.numero = 0
+            # descobrir os jogos do usuário
+            jogosAssin = None
+            if pedidosAssin:
+                jogosAssin = pedidosAssin[0].jogosPedidos.all()
+                for p in pedidosAssin:
+                    jogosAssin = jogosAssin | p.jogosPedidos.all()
+                print(jogosAssin)
+            #descobrir os jogos disponiveis
+            generosAssin = assin.generosPessoais.all()
+            jogosDisp = generosAssin[0].jogo_set.all()
+            for g in generosAssin:
+                jogosDisp = jogosDisp | g.jogo_set.all()
+            if jogosAssin:
+                for jogo in jogosAssin:
+                    jogosDisp = jogosDisp.exclude(pk=jogo.pk)
+            jogosDisp = jogosDisp.filter(preco__lte=assin.precoPorJogo,memRAM__lte=assin.memRAM,tipoMidia=assin.tipoMidia)
+            print(jogosDisp.all())
+            numViavel = min(len(jogosDisp.all()),assin.quantidade)
+            escolhidos = list(range(len(jogosDisp.all())))
+            escolhidos = random.sample(escolhidos,numViavel)
+            novoPedido.save()
+            for ind in escolhidos:
+                jogoAdd = jogosDisp.all()[ind]
+                novoPedido.jogosPedidos.add(jogoAdd)
+            novoPedido.save()
+            if assin.tipoMidia == 'DIGITAL':
+                for jogoAdd in novoPedido.jogosPedidos.all():
+                    ChaveDownload.objects.create(jogo=jogoAdd,pedido=novoPedido,chave=randomString(10))
 
     context_dict = {}
     try:
         ultimaEntrega = Pedido.objects.order_by('-data')[0]
     except:
         ultimaEntrega = None
-    print("X",ultimaEntrega.data)
     context_dict['ultimaEntrega'] = ultimaEntrega
     context_dict['delta'] = datetime.datetime.now().date() - ultimaEntrega.data
+
     return render(request, 'Assinante/GerenciarEntregas.html', context_dict)
 
+###################################################
 
 def HistoricoPedido(request, num_pedido):
-    
+
+    context_dict = {}
+    numPedido = int(num_pedido)
+    pedido = Pedido.objects.get(historico=(HistoricoJogos.objects.get(assinatura=request.user)),numero=numPedido)
+    context_dict['listaPedidos'] = Pedido.objects.filter(historico=(HistoricoJogos.objects.get(assinatura=request.user))).order_by('-data')
+    print("X",context_dict['listaPedidos'])
+    context_dict['pedido'] = pedido
+    numPedidos = len(Pedido.objects.all())
+    preco = 0
+    for j in pedido.jogosPedidos.all():
+        preco += j.preco
+    context_dict['preco'] = preco
+    if pedido.tipoMidia == 'DIGITAL':
+        context_dict['chaves'] = ChaveDownload.objects.filter(pedido=pedido)
+        context_dict['digital'] = True
+    if numPedido > 0:
+        context_dict['anterior'] = numPedido - 1
+        context_dict['temAnterior'] = True
+    if numPedido < numPedidos - 1:
+        context_dict['proximo'] = numPedido + 1
+    return render(request, 'Assinante/HistoricoPedido.html', context_dict)
+'''
     var = int(num_pedido)
     num1 = int(2*var-1)
     num2 = int(2*var)
@@ -147,8 +231,8 @@ def HistoricoPedido(request, num_pedido):
                 pass
         else:
             context_dict['digital2'] = False
-    
-    return render(request, 'Assinante/HistoricoPedido.html', context_dict)
+'''
+
 
 def EditarCadastro(request):
     return render(request, 'Assinante/EditarCAdastro.html', {})
