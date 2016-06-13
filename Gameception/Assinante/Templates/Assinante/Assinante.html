@@ -62,7 +62,6 @@
             <h3 class="panel-title">Minha Assinatura</h3>
           </div>
           {% if tem_assinatura %}
-            {% if assinatura.atividade %}
               <strong>{{assinatura.quantidade}}</strong> jogos por mês <br>
               Até R$ <strong>{{assinatura.precoPorJogo}}</strong> por jogo <br>
               Seus gêneros:<br>
@@ -71,9 +70,17 @@
                 {% endfor %}
               processador <strong>{{assinatura.processador.proc}}</strong><br>
               <a href="{% url 'Assinatura' %}"><button class="btn-primary">Editar assinatura</button></a>
+            {% if assinatura.atividade %}
+              <form method="post" action="{% url 'MinhaConta' %}" >
+                  {% csrf_token %}
+                  <button type="submit" class="btn-primary">Desativar Assinatura</button>
+              </form>
             {% else %}
-              Você desativou sua assinatura...
-              <a href="{% url 'Assinatura' %}">Edite sua assinatura para reativá-la</a>
+               <h3>Sua assinatura está desativada...</h3>
+              <form method="post" action="{% url 'MinhaConta' %}" >
+                  {% csrf_token %}
+                  <button type="submit" class="btn-primary">Ativar Assinatura</button>
+              </form>
             {% endif %}
           {% else %}
             {% if dados_completos %}
