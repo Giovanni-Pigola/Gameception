@@ -13,6 +13,7 @@
             <strong>Registre suas informações de pagamento:</strong><br/><br/>
 
             {{ form.non_field_errors }}
+            <div class="col-xs-4">
             <div class="form-group" >
                 <p class="required">
                     <label for="{{ form.numeroCartaoForm.id_for_label }}">Numero do cartão:</label>
@@ -43,6 +44,7 @@
             </div>
 
             <button type="submit" class="btn btn-default">Submit</button>
+            </div>
         </form>
 
     {% endif %}

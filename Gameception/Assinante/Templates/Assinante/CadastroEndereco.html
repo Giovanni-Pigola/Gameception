@@ -12,7 +12,7 @@
             <h1 class="form-signin-heading">Suas informações de endereço</h1>
             {{ form.non_field_errors }}
             <strong>Suas informações de endereço:</strong><br/><br/>
-
+            <div class="col-xs-3">
             <strong>Rua:</strong><br/>
             {{form.ruaForm.errors}}
             {{form.ruaForm}}
@@ -34,6 +34,7 @@
             <br/>
 
             <button type="submit" class="btn btn-default">Submit</button>
+            </div>
         </form>
 
     {% endif %}
