@@ -1,5 +1,21 @@
 {% extends "MainPage.html" %}
 
+{% block side %}
+
+  <h2>Meu jogos</h2>
+
+    <a href="{% url 'Historico' %}"><button class="btn-primary">Ver todos os meus jogos</button></a>
+
+  <h2>Meus pedidos por data</h2>
+
+  {% for p in listaPedidos %}
+
+    <a href="/Assinante/Historico/{{p.numero}}/"><button class="btn-primary">{{p.data}}</button></a>
+
+  {% endfor %}
+
+{% endblock %}
+
 {% block content %}
 
 <h1>HISTÓRICO</h1>
