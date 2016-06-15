@@ -8,42 +8,62 @@
     <title>Title</title>
 </head>
 <body>
-    <section style="padding:50px; border:3px solid #000000; position: absolute; margin:auto; left:30%; vertical-align:middle">
-        <div style="float:left; padding:50px">
+<div style="position:relative">
+    <table style="padding:50px; top: 50%; width: 100%; text-align: center; border-spacing: 50px">
 
-            <div>
-                <a href="https://www.facebook.com/Steam/?fref=ts" target="_blank">
-                    Facebook
+        <tr>
+            <td>
+                <a href="https://www.facebook.com/Gameception" target="_blank">
+                    <button type="button" class="btn btn-info btn-block">Facebook</button>
                 </a>
-            </div>
+            </td>
 
             <br><br>
 
-            <div>
-                <a href="{% url 'Home' %}" target="_blank">
-                    Twitter
+            <td>
+                <a href="https://twitter.com/GameceptionTwit" target="_blank">
+                    <button type="button" class="btn btn-info btn-block">Twitter</button>
                 </a>
-            </div>
-
-        </div>
-        <div style="float:left; padding:50px">
-
-            <div>
-                <a href="{% url 'Home' %}" target="_blank">
-                    Tumblr
+            </td>
+        </tr>
+        <tr>
+            <td><br> </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="http://gameceptionblog.tumblr.com/" target="_blank">
+                    <button type="button" class="btn btn-info btn-block">Tumblr</button>
                 </a>
-            </div>
+            </td>
 
             <br><br>
 
-            <div>
-                <a href="{% url 'Home' %}" target="_blank">
-                    Instagram
+            <td>
+                <a href="https://www.instagram.com/gameceptioninsta/" target="_blank">
+                    <button type="button" class="btn btn-info btn-block">Instagram</button>
                 </a>
-            </div>
+            </td>
+        </tr>
+        <tr>
+            <td><br> </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="https://plus.google.com/113322590669806837209?hl=en" target="_blank">
+                    <button type="button" class="btn btn-info btn-block">Google+</button>
+                </a>
+            </td>
 
-        </div>
-    </section>
+            <br><br>
+
+            <td>
+                <a href="https://www.youtube.com/channel/UCkSJZq4xNIg1hEdtDj-35sw?&ab_channel=GameceptionCompany" target="_blank">
+                    <button type="button" class="btn btn-info btn-block">Youtube</button>
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>
 {% endblock %}
