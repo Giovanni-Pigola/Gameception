@@ -434,10 +434,10 @@ class AssinanteForm(forms.ModelForm):
             field.widget.attrs['class'] = 'form-control'
 
 class EnderecoForm(forms.Form):
-    ruaForm = forms.CharField(label='rua', max_length=200)
-    numeroRuaForm = forms.IntegerField(label='numeroRua', min_value=1)
-    complementoForm = forms.CharField(label='complemento', max_length=200,required=False)
-    CEPForm = forms.CharField(label='CEP', min_length=8, max_length=8)
+    ruaForm = forms.CharField(label='rua', max_length=200, widget=forms.TextInput(attrs={'placeholder': 'Rua'}))
+    numeroRuaForm = forms.IntegerField(label='numeroRua', min_value=1, widget=forms.TextInput(attrs={'placeholder': 'NumeroRua'}))
+    complementoForm = forms.CharField(label='complemento', max_length=200,required=False, widget=forms.TextInput(attrs={'placeholder': 'Complemento'}))
+    CEPForm = forms.CharField(label='CEP', min_length=8, max_length=8, widget=forms.TextInput(attrs={'placeholder': 'CEP'}))
     def __init__(self, *args, **kwargs):
         super(EnderecoForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
