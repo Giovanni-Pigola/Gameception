@@ -1,19 +1,30 @@
 {% extends "MainPage.html" %}
 
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+
 <h1>HISTÓRICO</h1>
-</body>
-</html>
+
+{% for p in listaPedidos %}
+
+  {% for j in p.jogosPedidos.all %}
+    <div class="row" style="float: left; padding: 20px">
+      <div>
+        <div class="thumbnail">
+          <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{j.img1}}/header.jpg?t={{j.img2}}" style="width: 460px; height: 215px">
+          <div class="caption">
+            <h3>{{ j.nome }}</h3>
+            <p>Gêneros: </p>
+            {% for genero in j.listaGeneros.all %}
+            <p>{{ genero.nome }}</p>
+            {% endfor %}
+            Entregue em: {{p.data}}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+{% endfor %}
+
 {% endblock %}
 
-
-{% block side_block %}
-  OPÇÕES DO HISTÓRICO
-{% endblock %}
