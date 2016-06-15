@@ -83,7 +83,9 @@ def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO D
 # no fim, nao precisava dos gets tambem, mas deixei la por enquanto
 
 def Historico(request):
-    return render(request, 'Assinante/Historico.html', {})
+    context_dict = {}
+    context_dict['listaPedidos'] = Pedido.objects.filter(historico=(HistoricoJogos.objects.get(assinatura=request.user))).order_by('-data')
+    return render(request, 'Assinante/Historico.html', context_dict)
 
 
 ##################################################
