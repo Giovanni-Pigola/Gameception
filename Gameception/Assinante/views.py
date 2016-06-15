@@ -434,7 +434,7 @@ class AssinanteForm(forms.ModelForm):
 class EnderecoForm(forms.Form):
     ruaForm = forms.CharField(label='rua', max_length=200)
     numeroRuaForm = forms.IntegerField(label='numeroRua', min_value=1)
-    complementoForm = forms.CharField(label='complemento', max_length=200)
+    complementoForm = forms.CharField(label='complemento', max_length=200,required=False)
     CEPForm = forms.CharField(label='CEP', min_length=8, max_length=8)
     def __init__(self, *args, **kwargs):
         super(EnderecoForm, self).__init__(*args, **kwargs)
