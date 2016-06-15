@@ -12,20 +12,21 @@
 {% if digital %}
 
 {% for chave in chaves %}
-  <div class="row" style="float: left; padding: 20px">
-    <div>
-      <div class="thumbnail">
-        <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{chave.jogo.img1}}/header.jpg?t={{chave.jogo.img2}}" style="width: 460px; height: 215px">
-        <div class="caption">
-          <h3>{{ chave.jogo.nome }}</h3>
-          <p>Gêneros: </p>
-          {% for genero in chave.jogo.listaGeneros.all %}
-          <p>{{ genero.nome }}</p>
-          {% endfor %}
-          Chave de Download: {{chave.chave}}
-        </div>
-      </div>
-    </div>
+
+  <div class="row" style="float: left; padding: 20px; <!--outline-style:solid; outline-color:black;--> margin:10px">
+   <div>
+     <div class="thumbnail">
+       <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{chave.jogo.img1}}/header.jpg?t={{chave.jogo.img2}}" style="width: 460px; height: 215px">
+       <div class="caption">
+         <h3>{{ chave.jogo.nome }}</h3>
+         <p>Gêneros: </p>
+         {% for genero in chave.jogo.listaGeneros.all %}
+         <p style="display: inline">{{ genero.nome }};</p>
+         {% endfor %}
+         <br>Chave de Download: {{chave.chave}}
+       </div>
+     </div>
+   </div>
   </div>
 {% endfor %}
 
@@ -34,19 +35,22 @@
 <h3>Código de rastreamento: {{pedido.codigoRastreamento}}</h3>
 
 {% for jogo in pedido.jogosPedidos.all %}
-  <div class="row" style="float: left; padding: 20px">
-    <div>
-      <div class="thumbnail">
-        <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" style="width: 460px; height: 215px">
-        <div class="caption">
-          <h3>{{ jogo.nome }}</h3>
-          <p>Gêneros: </p>
-          {% for genero in jogo.listaGeneros.all %}
-          <p>{{ genero.nome }}</p>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
+
+  <div class="row" style="float: left; padding: 20px; <!--outline-style:solid; outline-color:black;--> margin:10px">
+   <div>
+     <div class="thumbnail">
+       <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" style="width: 460px; height: 215px">
+       <div class="caption">
+         <h3>{{ jogo.nome }}</h3>
+         <p>Gêneros: </p>
+         {% for genero in jogo.listaGeneros.all %}
+         <p style="display: inline">{{ genero.nome }};</p>
+         {% endfor %}
+         <br><p>Descrição:</p>
+         <p style="text-indent:30px">x y z</p>
+       </div>
+     </div>
+   </div>
   </div>
 {% endfor %}
 
@@ -62,76 +66,19 @@
 
   <h2>Meu jogos</h2>
 
-    <a href="{% url 'Historico' %}"><button class="btn-primary">Ver todos os meus jogos</button></a>
+
+    <form action="{% url 'Historico' %}">
+      <input type="submit" value="Ver todos os meus jogos" class="btn btn-primary btn-sm" style="margin:7px;width:150px;text-align: center">
+    </form>
 
   <h2>Meus pedidos por data</h2>
 
   {% for p in listaPedidos %}
 
-    <a href="/Assinante/Historico/{{p.numero}}/"><button class="btn-primary">{{p.data}}</button></a>
+    <form action="/Assinante/Historico/{{p.numero}}/">
+      <input type="submit" value="{{p.data}}" class="btn btn-primary btn-sm" style="margin:7px;width:100px;text-align: center">
+    </form>
 
   {% endfor %}
 
-{% endblock %}
-
-
-
-
-
-
-{% block contentz %}
-<body>
-      <h1>HISTÓRICO</h1>
-      mostrar aqui o pedido {{num_pedido}} do assinante {{user.username}}<br>
-      {{pedido1.data}}
-
-
-      {% if digital1 %}
-      dig {{pedido1.numero}}<br>
-
-      {% for chave in chaves1 %}
-      <div class="col-xs-12 col-sm-6 placeholder">
-        <div class="panel panel-primary">
-          <div class="panel-heading">
-            <h3 class="panel-title">{{chave.jogo.nome}}</h3>
-          </div>
-          <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{chave.jogo.img1}}/header.jpg?t={{chave.jogo.img2}}" alt="{{chave.jogo.nome}}" /><br>
-
-          Chave Download: {{chave.chave}}<br>
-
-        </div>
-      </div>
-      {% endfor %}
-
-      {% else %}
-      fis <br>
-
-      {% for jogo in pedido1.jogosPedidos.all %}
-
-      <div class="col-xs-12 col-sm-6 placeholder">
-        <div class="panel panel-primary">
-          <div class="panel-heading">
-            <h3 class="panel-title">{{jogo.nome}}</h3>
-          </div>
-          <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" alt="{{chave.jogo.nome}}" /><br>
-          <div class="">
-          </div>
-        </div>
-      </div>
-
-      {% endfor %}
-      Código de rastreamento: {{pedido1.codigoRastreamento}}<br>
-
-      {% endif %}
-
-
-
-      {% if pode_sucessor %}
-        <a href="/Assinante/Historico/{{sucessor}}/">Próxima entrega</a><br>
-      {% endif %}
-      {% if pode_antecessor %}
-        <a href="/Assinante/Historico/{{antecessor}}/">Entrega anterior</a><br>
-      {% endif %}
-</body>
-</html>
 {% endblock %}
