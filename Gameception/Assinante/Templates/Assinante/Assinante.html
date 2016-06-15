@@ -43,7 +43,8 @@
               </div>
               {% endfor %}
               Código de rastreamento: {{pedido_recente.codigoRastreamento}}<br>
-              <br><a href="/Assinante/Historico/{{pedido_recente.numero}}/"><button class="btn-primary">Ver minhas outras entregas</button></a>
+              <br><a href="/Assinante/Historico/{{pedido_recente.numero}}/">
+            <button class="btn btn-md btn-primary" style="margin:10px">Ver minhas outras entregas</button></a>
 
               {% endif %}
 
@@ -69,30 +70,33 @@
                   <strong>{{genero.nome}}</strong><br>
                 {% endfor %}
               processador <strong>{{assinatura.processador.proc}}</strong><br>
-              <a href="{% url 'Assinatura' %}"><button class="btn-primary">Editar assinatura</button></a>
+              <a href="{% url 'Assinatura' %}"><button class="btn btn-md btn-primary" style="margin:10px">Editar assinatura</button></a>
             {% if assinatura.atividade %}
               <form method="post" action="{% url 'MinhaConta' %}" >
                   {% csrf_token %}
-                  <button type="submit" class="btn-primary">Desativar Assinatura</button>
+                  <button class="btn btn-md btn-primary" style="margin:10px" type="submit">Desativar Assinatura</button>
               </form>
             {% else %}
                <h3>Sua assinatura está desativada...</h3>
               <form method="post" action="{% url 'MinhaConta' %}" >
                   {% csrf_token %}
-                  <button type="submit" class="btn-primary">Ativar Assinatura</button>
+                  <button type="submit" style="margin:10px" class="btn btn-md btn-primary">Ativar Assinatura</button>
               </form>
             {% endif %}
           {% else %}
             {% if dados_completos %}
               Você ainda não completou sua assinatura... <br>
-              <a href="{% url 'Assinatura' %}">Diga-nos suas preferências e comece a receber jogos!</a>
+              <a href="{% url 'Assinatura' %}">
+                  <button class="btn btn-md btn-primary" style="margin:10px">Diga-nos suas preferências e comece a receber jogos!</button></a>
             {% else %}
-              Você ainda não completou agumas informações... <br>
+              <h4>Você ainda não completou agumas informações...</h4> <br>
               {% if not tem_infos_pagamento %}
-                <a href="{% url 'InfoPagamento' %}">Complete suas informações de pagamento</a><br>
+                <a href="{% url 'InfoPagamento' %}">
+                    <button class="btn btn-md btn-primary" style="margin:10px">Complete suas informações de pagamento</button></a><br>
               {% endif %}
               {% if not tem_infos_endereco %}
-                <a href="{% url 'CadastroEndereco' %}">Complete suas informações de endereco</a><br>
+                <a href="{% url 'CadastroEndereco' %}">
+                    <button class="btn btn-md btn-primary" style="margin:10px">Complete suas informações de endereco</button></a><br>
               {% endif %}
               Complete suas informações para poder fazer sua assinatura!
             {% endif %}
@@ -109,11 +113,11 @@
           {% if tem_infos_endereco %}
             <strong>Rua</strong> {{infos_endereco.rua}},{{infos_endereco.numeroRua}},{{infos_endereco.complemento}} <br>
             <strong>CEP</strong> {{infos_endereco.CEP}} <br>
-            <a href="{% url 'CadastroEndereco' %}"><button class="btn-primary">Editar informações de endereco</button></a>
+            <a href="{% url 'CadastroEndereco' %}"><button class="btn btn-md btn-primary" style="margin:10px">Editar informações de endereco</button></a>
           {% else %}
           Você ainda não registrou suas informações de endereço...
           <a href="{% url 'CadastroEndereco' %}"><br>
-            <button class="btn-primary">Registrar suas informações de endereço!</button></a>
+            <button class="btn btn-md btn-primary" style="margin:10px">Registrar suas informações de endereço!</button></a>
           {% endif %}
         </div>
       </div>
@@ -127,11 +131,11 @@
             <strong>Titular</strong> {{infos_pagamento.nomeTitular}} <br>
             <strong>Nº Cartao</strong> {{infos_pagamento.numeroCartao}} <br>
             <strong>Código de seguranca</strong> {{infos_pagamento.codigoSeguranca}} <br>
-            <a href="{% url 'InfoPagamento' %}"><button class="btn-primary">Editar informações de pagamento</button></a>
+            <a href="{% url 'InfoPagamento' %}"><button class="btn btn-md btn-primary" style="margin:10px">Editar informações de pagamento</button></a>
           {% else %}
             Você ainda não registrou suas informações de pagamento...
             <a href="{% url 'InfoPagamento' %}"><br>
-              <button class="btn-primary">Registrar suas informações de pagamento!</button></a>
+              <button class="btn btn-md btn-primary" style="margin:10px">Registrar suas informações de pagamento!</button></a>
           {% endif %}
         </div>
       </div>
@@ -141,9 +145,10 @@
           <div class="panel-heading">
             <h3 class="panel-title">Outras opções</h3>
           </div>
-          <a href="{% url 'EditarCadastro' %}"><button class="btn-primary" >Editar informações de cadastro</button></a> <br><br>
+          <a href="{% url 'EditarCadastro' %}"><button class="btn btn-md btn-primary" style="margin:10px">Editar informações de cadastro</button></a> <br>
 
-            <a href="" data-toggle="modal" data-target="#myModal"><button class="btn-primary">Contatar um administrador</button></a>
+            <a href="" data-toggle="modal" data-target="#myModal">
+                <button class="btn btn-md btn-primary" style="margin:10px">Contatar um administrador</button></a>
            <br>
         </div>
       </div>
