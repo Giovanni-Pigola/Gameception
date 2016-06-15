@@ -1,7 +1,7 @@
 {% extends "MainPage.html" %}
 
 {% block content %}
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,27 +12,28 @@
 
   {% if not filtrado %}
   {% for jogo in jogos %}
-  <div class="row" style="float: left; padding: 20px">
-    <div>
-      <div class="thumbnail">
-        <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" style="width: 460px; height: 215px">
-        <div class="caption">
-          <h3>{{ jogo.nome }}</h3>
-          <p>Gêneros: </p>
-          {% for genero in jogo.listaGeneros.all %}
-          <p>{{ genero.nome }}</p>
-          {% endfor %}
-          <p>x y z</p>
+    <div class="row" style="float: left; padding: 20px; <!--outline-style:solid; outline-color:black;--> margin:10px" >
+        <div>
+            <div class="thumbnail">
+                <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" style="width: 460px; height: 215px">
+            <div class="caption">
+            <h3>{{ jogo.nome }}</h3>
+            <p>Gêneros: </p>
+            {% for genero in jogo.listaGeneros.all %}
+            <p style="display: inline">{{ genero.nome }};</p>
+            {% endfor %}
+            <p>Descrição:</p>
+            <p style="text-indent:30px">x y z</p>
+            </div>
         </div>
-      </div>
+        </div>
     </div>
-  </div>
   {% endfor %}
   {% else %}
    {% for jogo in jogos %}
     {% for genero in jogo.listaGeneros.all %}
     {% if genero.nome == gen %}
-   <div class="row" style="float: left; padding: 20px">
+   <div class="row" style="float: left; padding: 20px; <!--outline-style:solid; outline-color:black;--> margin:10px">
     <div>
       <div class="thumbnail">
         <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" style="width: 460px; height: 215px">
@@ -40,9 +41,10 @@
           <h3>{{ jogo.nome }}</h3>
           <p>Gêneros: </p>
           {% for genero in jogo.listaGeneros.all %}
-          <p>{{ genero.nome }}</p>
+          <p style="display: inline">{{ genero.nome }};</p>
           {% endfor %}
-          <p>x y z</p>
+          <p>Descrição:</p>
+          <p style="text-indent:30px">x y z</p>
         </div>
       </div>
     </div>
@@ -60,12 +62,14 @@
 
 {% block side %}
 
-<h2>Categorias de jogos:</h2>
-
+<h3>Categorias de jogos:</h3>
+<a href="{% url 'Acervo' %}">
+    <button type="button" value="Acervo" class="btn btn-primary btn-sm" style="margin:7px;width:100px;text-align: center">Todos</button></a>
+<br>
 {% for genero in generos %}
-<form action="../../../Acervo/{{genero.nome}}">
-  <input type="submit" value="{{genero.nome}}" class="btn-primary">
-</form><br>
+<form action="{% url 'Acervo' %}/{{genero.nome}}">
+  <input type="submit" value="{{genero.nome}}" class="btn btn-primary btn-sm" style="margin:7px;width:100px;text-align: center">
+</form>
 {% endfor %}
 
 {% endblock %}
