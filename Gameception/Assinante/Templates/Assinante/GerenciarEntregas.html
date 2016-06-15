@@ -5,7 +5,7 @@
 <h2>ultima entrega em {{ultimaEntrega.data}}, há {{delta}}</h2>
 <form method="post" action="{% url 'GerenciarEntregas' %}" >
     {% csrf_token %}
-    <button type="submit" class="btn-primary">Nova entrega para os clientes ativos</button>
+    <button type="submit" class="btn btn-primary btn-md">Nova entrega para os clientes ativos</button>
 </form>
 {% endblock %}
 
