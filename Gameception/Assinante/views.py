@@ -21,7 +21,7 @@ from .models import Pedido
 from .models import Jogo
 
 
-def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO DA ERRO.
+def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO DA ERRO. # python manage.py runserver 192.168.1.122:5555
     #endereco = EnderecoAssinatura.objects.get(id=1) #peguei um endereco de assinatura que registrei no bd, so pra teste
     if request.method == 'POST':
         assin = DadosAssinatura.objects.get(assinatura=request.user)
@@ -416,11 +416,20 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password')
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
 
 class AssinanteForm(forms.ModelForm):
+    CPF = forms.CharField(min_length=11,max_length=11)
     class Meta:
         model = Assinante
         fields = ('CPF', 'nome')
+    def __init__(self, *args, **kwargs):
+        super(AssinanteForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
 
 class EnderecoForm(forms.Form):
     ruaForm = forms.CharField(label='rua', max_length=200)
