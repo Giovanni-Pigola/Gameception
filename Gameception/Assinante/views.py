@@ -237,7 +237,32 @@ def HistoricoPedido(request, num_pedido):
 
 
 def EditarCadastro(request):
-    return render(request, 'Assinante/EditarCAdastro.html', {})
+    registrado = False
+    if request.method == 'POST':
+        user_form = UserForm(data=request.POST)
+        assinante_form = AssinanteForm(data=request.POST)
+        if user_form.is_valid() and assinante_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+            assinante = assinante_form.save(commit=False)
+            assinante.usuario = user
+            assinante.save()
+            registrado = True
+    else:
+            username = request.user.get_username()
+            user = User.objects.get(username=username)
+            dadoscad = Assinante.objects.get(usuario=user)
+            user_form = UserForm()
+            assinante_form = AssinanteForm()
+            user_form.fields["email"].initial = user.email
+            user_form.fields[
+                "username"].initial = user.username
+            user_form.fields[
+                "password"].initial = user.password
+            assinante_form.fields["CPF"].initial = dadoscad.CPF
+            assinante_form.fields["nome"].initial = dadoscad.nome
+    return render(request, 'Assinante/EditarCAdastro.html', {'registrado' : registrado})
 
 def InfoPagamento(request):
     finalizado = False
