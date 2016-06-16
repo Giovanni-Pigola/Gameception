@@ -186,83 +186,32 @@ def HistoricoPedido(request, num_pedido):
     if numPedido < numPedidos - 1:
         context_dict['proximo'] = numPedido + 1
     return render(request, 'Assinante/HistoricoPedido.html', context_dict)
-'''
-    var = int(num_pedido)
-    num1 = int(2*var-1)
-    num2 = int(2*var)
-    historico = HistoricoJogos.objects.get(assinatura=request.user)
-    pedidos = Pedido.objects.filter(historico=historico)
-    try:
-        pedido1 = Pedido.objects.get(historico=historico,numero=num1)
-    except:
-        pedido1 = None
-    try:
-        pedido2 = Pedido.objects.get(historico=historico,numero=num2)
-    except:
-        pedido2 = None
-    print(pedido1)
-    print(pedido2)
-    antecessor = var - 1
-    pode_antecessor = True
-    sucessor = var + 1
-    pode_sucessor = True
-    if var >= len(pedidos) - 1:
-        pode_sucessor = False
-    if var <= 0:
-        pode_antecessor = False
-    context_dict = {'num_pedido': num_pedido, 'pedido1': pedido1, 'pedido2': pedido2}
-    context_dict['antecessor'] = antecessor
-    context_dict['pode_antecessor'] = pode_antecessor
-    context_dict['sucessor'] = sucessor
-    context_dict['pode_sucessor'] = pode_sucessor
-    if pedido1 != None:
-        if pedido1.tipoMidia == 'DIGITAL':
-            context_dict['digital1'] = True
-            try:
-                context_dict['chaves1'] = ChaveDownload.objects.filter(pedido=pedido1)
-            except:
-                pass
-        else:
-            context_dict['digital1'] = False
-    if pedido2 != None:
-        if pedido2.tipoMidia == 'DIGITAL':
-            context_dict['digital2'] = True
-            try:
-                context_dict['chaves2'] = ChaveDownload.objects.filter(pedido=pedido2)
-            except:
-                pass
-        else:
-            context_dict['digital2'] = False
-'''
 
 
 def EditarCadastro(request):
     registrado = False
     if request.method == 'POST':
-        user_form = UserForm(data=request.POST)
-        assinante_form = AssinanteForm(data=request.POST)
-        if user_form.is_valid() and assinante_form.is_valid():
-            user = user_form.save()
-            user.set_password(user.password)
-            user.save()
-            assinante = assinante_form.save(commit=False)
-            assinante.usuario = user
-            assinante.save()
-            registrado = True
+        userAt = User.objects.get(username=request.user.username)
+        form = UserFormA(data=request.POST,instance=userAt)
+        form.save()
+        registrado = True
     else:
-            username = request.user.get_username()
-            user = User.objects.get(username=username)
-            dadoscad = Assinante.objects.get(usuario=user)
-            user_form = UserForm()
-            assinante_form = AssinanteForm()
-            user_form.fields["email"].initial = user.email
-            user_form.fields[
-                "username"].initial = user.username
-            user_form.fields[
-                "password"].initial = user.password
-            assinante_form.fields["CPF"].initial = dadoscad.CPF
-            assinante_form.fields["nome"].initial = dadoscad.nome
-    return render(request, 'Assinante/EditarCAdastro.html', {'registrado' : registrado})
+            form = UserFormA(initial={'username': request.user.username,
+                'email' : request.user.email})
+    return render(request, 'Assinante/EditarCadastro.html', {'registrado' : registrado, 'form' : form})
+
+def EditarSenha(request):
+    registrado = False
+    if request.method == 'POST':
+        userAt = User.objects.get(username=request.user.username)
+        form = UserFormB(data=request.POST)
+        dummyUser = form.save(commit=False)
+        userAt.set_password(dummyUser.password)
+        userAt.save()
+        registrado = True
+    else:
+        form = UserFormB()
+    return render(request, 'Assinante/EditarSenha.html', {'registrado' : registrado, 'form' : form})
 
 def InfoPagamento(request):
     finalizado = False
@@ -447,6 +396,26 @@ class UserForm(forms.ModelForm):
         super(UserForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+
+class UserFormA(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('username', 'email')
+    def __init__(self, *args, **kwargs):
+        super(UserFormA, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+
+class UserFormB(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+    class Meta:
+        model = User
+        fields = ('password',)
+    def __init__(self, *args, **kwargs):
+        super(UserFormB, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+
 
 class AssinanteForm(forms.ModelForm):
     CPF = forms.CharField(min_length=11,max_length=11)
