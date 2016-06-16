@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^Assinatura/', views.Assinatura, name="Assinatura"),
     url(r'^ContatoAdmin/', views.ContatoAdmin, name="ContatoAdmin"),
     url(r'^EditarCadastro/', views.EditarCadastro, name="EditarCadastro"),
+    url(r'^EditarSenha/', views.EditarSenha, name="EditarSenha"),
     url(r'^Logout/', views.user_logout, name="Logout"),
     url(r'^Login/', views.user_login, name="Login"),
     url(r'^$', views.MinhaConta, name="MinhaConta"), #joga para a função Assinante em views.py
