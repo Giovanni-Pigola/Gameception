@@ -374,7 +374,7 @@ def user_logout(request):
 
 class DadosAssinaturaForm(forms.Form):
     generosPessoaisForm = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=Genero.objects.all())
-    quantidadeForm = forms.IntegerField(min_value=1)
+    quantidadeForm = forms.IntegerField(min_value=1, max_value=5)
     precoPorJogoForm = forms.IntegerField(min_value=1)
     tipoMidiaForm = forms.ChoiceField(widget=forms.Select(), choices=(('FISICA', 'Fisica'),('DIGITAL', 'Digital'),))
     sistOpForm = forms.ModelChoiceField(widget=forms.Select(), queryset=SistOp.objects.all())
