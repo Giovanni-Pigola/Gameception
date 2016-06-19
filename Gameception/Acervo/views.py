@@ -16,7 +16,7 @@ def filtro(request, genero, pagina):
     if(genero == 'Todos'):
         listajogos = Jogo.objects.order_by('-id')
         jogos = []
-        for i in range(99*(pagina-1), 99*pagina):
+        for i in range(48*(pagina-1), 48*pagina):
             try:
                 jogos.append(listajogos[i])
             except:
@@ -24,14 +24,15 @@ def filtro(request, genero, pagina):
     else:
         listajogos = Jogo.objects.filter(listaGeneros__nome=genero).order_by('-id')
         jogos = []
-        for i in range(99*(pagina-1), 99*pagina):
+        for i in range(48*(pagina-1), 48*pagina):
             try:
                 jogos.append(listajogos[i])
             except:
                 pass
-    paginas = math.ceil(len(listajogos)/99)
+    paginas = math.ceil(len(listajogos)/48)
     listapaginas = []
-    for i in range(1, paginas+1):
-        listapaginas.append(i)
+    for i in range(pagina-4, pagina+5):
+        if (i>0):
+            listapaginas.append(i)
     generos = Genero.objects.all()
     return render(request, 'Acervo/Acervo.html', {'generos' : generos, 'jogos' : jogos, 'listapaginas': listapaginas, 'antpagina': (pagina-1), 'proxpagina': (pagina+1), 'genero': genero, 'pagina': pagina})
