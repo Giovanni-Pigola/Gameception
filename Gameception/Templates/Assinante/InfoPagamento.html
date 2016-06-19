@@ -1,0 +1,52 @@
+{% extends "MainPage.html" %}
+
+{% block content %}
+
+    {% if finalizado %}
+
+        Os dados bancarios foram armazenados com sucesso. <a href="{% url 'MinhaConta' %}">Voltar à sua página de assinante</a>
+
+    {% else %}
+        <form role="form" action="/Assinante/InfoPagamento/" method="post">
+            {% csrf_token %}
+            <h2 class="form-signin-heading">Informações de Pagamento</h2>
+            <strong>Registre suas informações de pagamento:</strong><br/><br/>
+
+            {{ form.non_field_errors }}
+            <div class="col-xs-4">
+            <div class="form-group" >
+                <p class="required">
+                    <label for="{{ form.numeroCartaoForm.id_for_label }}">Numero do cartão:</label>
+                    {{ form.numeroCartaoForm.errors }}
+                    <input class="form-control"  id="{{ form.numeroCartaoForm.id_for_label }}" name="numeroCartaoForm" type="text"  placeholder="Numero do cartão" {% if form.numeroCartaoForm.value != None %}value="{{ form.numeroCartaoForm.value }}" {% endif %}/>
+                </p>
+            </div>
+            <div class="form-group" >
+                <p class="required">
+                    <label for="{{ form.codigoSegurancaForm.id_for_label }}">Código de Segurança:</label>
+                    {{ form.codigoSegurancaForm.errors }}
+                    <input class="form-control"  id="{{ form.codigoSegurancaForm.id_for_label }}" name="codigoSegurancaForm" type="text"  placeholder="Código de Segurança" {% if form.codigoSegurancaForm.value != None %}value="{{ form.codigoSegurancaForm.value }}" {% endif %}/>
+                </p>
+            </div>
+            <div class="form-group" >
+                <p class="required">
+                    <label for="{{ form.nomeTitularForm.id_for_label }}">Nome do Titular:</label>
+                    {{ form.nomeTitularForm.errors }}
+                    <input class="form-control"  id="{{ form.nomeTitularForm.id_for_label }}" name="nomeTitularForm" type="text"  placeholder="Nome do Titular" {% if form.nomeTitularForm.value != None %}value="{{ form.nomeTitularForm.value }}" {% endif %}/>
+                </p>
+            </div>
+            <div class="form-group" >
+                <p class="required">
+                    <label for="{{ form.vencimentoForm.id_for_label }}">Data de Vencimento:</label>
+                    {{ form.vencimentoForm.errors }}
+                    <input class="form-control"  id="{{ form.vencimentoForm.id_for_label }}" name="vencimentoForm" type="text"  placeholder="Data de Vencimento" {% if form.vencimentoForm.value != None %}value="{{ form.vencimentoForm.value }}" {% endif %}/>
+                </p>
+            </div>
+
+            <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+        </form>
+
+    {% endif %}
+
+{% endblock %}

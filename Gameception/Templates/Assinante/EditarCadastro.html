@@ -1,0 +1,51 @@
+{% extends "MainPage.html" %}
+
+
+{% block content %}
+
+    {% if registrado %}
+
+      Suas informações foram alteradas com sucesso!
+
+    {% else %}
+
+        <form role="form"  method="post" action="/Assinante/EditarCadastro/">
+            {% csrf_token %}
+
+        <h2 class="form-signin-heading">Edite Seu username ou email</h2>
+        <div class="col-xs-3">
+        <strong>Username:</strong><br/>
+        {{ form.username.errors }}
+        {{ form.username }}
+        <br/>
+
+        <strong>E-mail:</strong><br/>
+        {{ form.email.errors }}
+        {{ form.email }}
+        <br/>
+
+        <strong>CPF: </strong><br/>
+        {{ assinante_form.CPF.errors }}
+        {{ assinante_form.CPF }}
+        <br/>
+
+
+        <strong>Nome: </strong><br/>
+        {{ assinante_form.nome.errors }}
+        {{ assinante_form.nome }}
+        <br/>
+
+
+        <strong>Telefone: </strong><br/>
+        {{ assinante_form.telefone.errors }}
+        {{ assinante_form.telefone }}
+        <br/>
+
+
+      <button type="submit" class="btn btn-default">Submit</button>
+      </div>
+      </form>
+
+    {% endif %}
+
+{% endblock %}

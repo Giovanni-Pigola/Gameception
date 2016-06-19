@@ -1,0 +1,30 @@
+{% extends "MainPage.html" %}
+
+
+{% block content %}
+
+  {% if registrado %}
+
+        Suas informações foram alteradas com sucesso!<br><br>
+        Por favor realize o login novamente, utilizando a nova senha.<br>
+        <a href="{% url 'Login' %}"><button class="btn btn-md btn-primary" style="margin:10px">Ir para tela de login</button></a>
+
+  {% else %}
+
+      <form role="form"  method="post" action="/Assinante/EditarSenha/">
+                      {% csrf_token %}
+
+      <h2 class="form-signin-heading">Digite sua nova senha: </h2>
+      <div class="col-xs-3">
+
+       <strong>Nova senha:</strong><br/>
+       {{ form.password.errors }}
+       {{ form.password }}
+       <br/>
+
+      <button type="submit" class="btn btn-default">Alterar senha</button>
+      </div>
+      </form>
+
+    {% endif %}
+{% endblock %}
