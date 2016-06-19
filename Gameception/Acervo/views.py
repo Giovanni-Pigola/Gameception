@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from Assinante.models import Jogo
 from Assinante.models import Genero
-# Create your views here.
+import math
+
 def Acervo(request):
     filtrado = False
     jogos = Jogo.objects.order_by('-id')
@@ -28,6 +29,9 @@ def filtro(request, genero, pagina):
                 jogos.append(listajogos[i])
             except:
                 pass
-    paginas = len(listajogos)/99
+    paginas = math.ceil(len(listajogos)/99)
+    listapaginas = []
+    for i in range(1, paginas+1):
+        listapaginas.append(i)
     generos = Genero.objects.all()
-    return render(request, 'Acervo/Acervo.html', {'generos' : generos, 'jogos' : jogos, 'paginas': paginas})
+    return render(request, 'Acervo/Acervo.html', {'generos' : generos, 'jogos' : jogos, 'listapaginas': listapaginas, 'antpagina': (pagina-1), 'proxpagina': (pagina+1), 'genero': genero, 'pagina': pagina})
