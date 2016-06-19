@@ -199,9 +199,16 @@ def EditarCadastro(request):
         assinante_form.save()
         registrado = True
     else:
-        form = UserFormA(initial={'username': request.user.username, 'email' : request.user.email})
-        assinante = Assinante.objects.get(usuario=request.user)
-        assinante_form = AssinanteForm(initial={'CPF': assinante.CPF, 'nome': assinante.nome, 'telefone': assinante.telefone})
+        try:
+            form = UserFormA(initial={'username': request.user.username, 'email' : request.user.email})
+        except:
+            form = UserFormA()
+        try:
+            assinante = Assinante.objects.get(usuario=request.user)
+            assinante_form = AssinanteForm(initial={'CPF': assinante.CPF, 'nome': assinante.nome, 'telefone': assinante.telefone})
+        except:
+            assinante = Assinante.objects.create(usuario=request.user)
+            assinante_form = AssinanteForm()
     return render(request, 'Assinante/EditarCadastro.html', {'registrado' : registrado, 'form' : form, 'assinante_form': assinante_form})
 
 def EditarSenha(request):
