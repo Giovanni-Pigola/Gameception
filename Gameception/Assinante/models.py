@@ -17,6 +17,7 @@ class Assinante(models.Model):
     CPF = models.CharField(max_length=11)
     nome = models.CharField(max_length=200)
     usuario = models.OneToOneField(User)
+    telefone = models.CharField(max_length=16)
     # tirei os gets e sets por motivos de: ja existem as funções do django que fazem isso
     # se em algum momento for necessario a gente poe de volta
     def __str__(self): # chave primaria que vai ser mostrada no banco de dados das assinaturas
@@ -100,9 +101,10 @@ class Jogo(models.Model):
     img2 = models.CharField(max_length=200)
     tipoMidia = models.CharField(max_length=10,choices=TIPOS_MIDIA,default='DIGITAL',)
     memRAM = models.IntegerField(default=0)
+    descricao = models.CharField(max_length=500)
 
     def __str__(self):
-            return self.nome;
+            return self.nome
 
 
 class DadosBancarios(models.Model):

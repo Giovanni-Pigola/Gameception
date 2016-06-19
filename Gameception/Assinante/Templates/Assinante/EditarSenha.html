@@ -5,7 +5,9 @@
 
   {% if registrado %}
 
-      Suas informações foram alteradas com sucesso!
+        Suas informações foram alteradas com sucesso!<br><br>
+        Por favor realize o login novamente, utilizando a nova senha.<br>
+        <a href="{% url 'Login' %}"><button class="btn btn-md btn-primary" style="margin:10px">Ir para tela de login</button></a>
 
   {% else %}
 

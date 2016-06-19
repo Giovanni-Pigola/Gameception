@@ -3,35 +3,49 @@
 
 {% block content %}
 
-  {% if registrado %}
+    {% if registrado %}
 
       Suas informações foram alteradas com sucesso!
 
-  {% else %}
+    {% else %}
 
-      <form role="form"  method="post" action="/Assinante/EditarCadastro/">
-                      {% csrf_token %}
+        <form role="form"  method="post" action="/Assinante/EditarCadastro/">
+            {% csrf_token %}
 
-      <h2 class="form-signin-heading">Edite Seu username ou email</h2>
-      <div class="col-xs-3">
-       <strong>Username:</strong><br/>
-       {{ form.username.errors }}
-       {{ form.username }}
-       <br/>
+        <h2 class="form-signin-heading">Edite Seu username ou email</h2>
+        <div class="col-xs-3">
+        <strong>Username:</strong><br/>
+        {{ form.username.errors }}
+        {{ form.username }}
+        <br/>
 
-       <strong>email:</strong><br/>
-       {{ form.email.errors }}
-       {{ form.email }}
-       <br/>
+        <strong>E-mail:</strong><br/>
+        {{ form.email.errors }}
+        {{ form.email }}
+        <br/>
+
+        <strong>CPF: </strong><br/>
+        {{ assinante_form.CPF.errors }}
+        {{ assinante_form.CPF }}
+        <br/>
+
+
+        <strong>Nome: </strong><br/>
+        {{ assinante_form.nome.errors }}
+        {{ assinante_form.nome }}
+        <br/>
+
+
+        <strong>Telefone: </strong><br/>
+        {{ assinante_form.telefone.errors }}
+        {{ assinante_form.telefone }}
+        <br/>
+
 
       <button type="submit" class="btn btn-default">Submit</button>
       </div>
       </form>
 
     {% endif %}
-
-    <div class="">
-    <a href="{% url 'EditarSenha' %}"><button type="input" class="btn btn-default">alterar senha</button></a>
-    </div>
 
 {% endblock %}

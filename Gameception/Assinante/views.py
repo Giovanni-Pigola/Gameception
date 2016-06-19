@@ -194,11 +194,15 @@ def EditarCadastro(request):
         userAt = User.objects.get(username=request.user.username)
         form = UserFormA(data=request.POST,instance=userAt)
         form.save()
+        assinante = Assinante.objects.get(usuario=request.user)
+        assinante_form = AssinanteForm(data=request.POST,instance=assinante)
+        assinante_form.save()
         registrado = True
     else:
-            form = UserFormA(initial={'username': request.user.username,
-                'email' : request.user.email})
-    return render(request, 'Assinante/EditarCadastro.html', {'registrado' : registrado, 'form' : form})
+        form = UserFormA(initial={'username': request.user.username, 'email' : request.user.email})
+        assinante = Assinante.objects.get(usuario=request.user)
+        assinante_form = AssinanteForm(initial={'CPF': assinante.CPF, 'nome': assinante.nome, 'telefone': assinante.telefone})
+    return render(request, 'Assinante/EditarCadastro.html', {'registrado' : registrado, 'form' : form, 'assinante_form': assinante_form})
 
 def EditarSenha(request):
     registrado = False
@@ -419,9 +423,10 @@ class UserFormB(forms.ModelForm):
 
 class AssinanteForm(forms.ModelForm):
     CPF = forms.CharField(min_length=11,max_length=11)
+    telefone = forms.CharField(min_length=8, max_length=16)
     class Meta:
         model = Assinante
-        fields = ('CPF', 'nome')
+        fields = ('CPF', 'nome', 'telefone')
     def __init__(self, *args, **kwargs):
         super(AssinanteForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
