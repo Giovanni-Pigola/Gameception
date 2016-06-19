@@ -4,7 +4,7 @@
 
 {% block content %}
 
-  {% if not filtrado %}
+
   {% for jogo in jogos %}
     <div class="row" style="float: left; padding: 20px; <!--outline-style:solid; outline-color:black;--> margin:10px" >
         <div class="thumbnail">
@@ -24,31 +24,6 @@
         </div>
     </div>
   {% endfor %}
-  {% else %}
-    {% for jogo in jogos %}
-      {% for genero in jogo.listaGeneros.all %}
-        {% if genero.nome == gen %}
-            <div class="row" style="float: left; padding: 20px; <!--outline-style:solid; outline-color:black;--> margin:10px">
-                <div class="thumbnail">
-                    <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" style="width: 460px; height: 215px">
-                    <div class="caption" style="max-width:460px; height: 300px">
-                        <h3>{{ jogo.nome }}</h3>
-                        <p>Gêneros: </p>
-                        <p style="display: inline">
-                        {% for genero in jogo.listaGeneros.all %}
-                            {{ genero.nome }};
-                        {% endfor %}
-                        </p>
-                        <br><br>
-                        <p>Descrição:</p>
-                        <p>{{ jogo.descricao }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-      {% endfor %}
-    {% endfor %}
-  {% endif %}
 
 {% endblock %}
 
@@ -56,11 +31,11 @@
 {% block side %}
 
     <h3>Categorias de jogos:</h3>
-    <a href="{% url 'Acervo' %}">
+    <a href="{% url 'Acervo' %}/Todos/1">
         <button class="btn btn-primary btn-md" style="margin:10px;width:200px;text-align: center">Todos</button></a>
     <br>
     {% for genero in generos %}
-        <a href="{% url 'Acervo' %}/{{genero.nome}}">
+        <a href="{% url 'Acervo' %}/{{genero.nome}}/1/">
             <button class="btn btn-primary btn-md" style="margin:10px;width:200px;text-align: center">{{genero.nome}}</button>
         </a>
     {% endfor %}
