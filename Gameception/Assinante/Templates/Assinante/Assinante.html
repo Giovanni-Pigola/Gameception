@@ -16,7 +16,6 @@
           <div class="panel-heading">
             <h3 class="panel-title">Meu histórico de Jogos</h3>
           </div>
-          {% if tem_assinatura %}
             {% if tem_pedido_para_mostrar %}
 
               Entrega de {{pedido_recente.data}}
@@ -52,11 +51,12 @@
               {% endif %}
 
             {% else %}
-              Você ainda não recebeu nenhum jogo! Aguarde sua primeira entrega em breve!
+                {% if tem_assinatura %}
+                    Você ainda não recebeu nenhum jogo! Aguarde sua primeira entrega em breve!
+                {% else %}
+                    Complete sua assinatura para começar a receber jogos!
+                {% endif %}
             {% endif %}
-          {% else %}
-            Complete sua assinatura para começar a receber jogos!
-          {% endif %}
         </div>
       </div>
 
@@ -93,6 +93,10 @@
                   <button class="btn btn-md btn-primary" style="margin:10px">Diga-nos suas preferências e comece a receber jogos!</button></a>
             {% else %}
               <h4>Você ainda não completou agumas informações...</h4> <br>
+              {% if not cadastro_completo %}
+                <a href="{% url 'EditarCadastro' %}">
+                    <button class="btn btn-md btn-primary" style="margin:10px">Complete suas informações de cadastro</button></a><br>
+              {% endif %}
               {% if not tem_infos_pagamento %}
                 <a href="{% url 'InfoPagamento' %}">
                     <button class="btn btn-md btn-primary" style="margin:10px">Complete suas informações de pagamento</button></a><br>
@@ -151,7 +155,8 @@
           <a href="{% url 'EditarCadastro' %}"><button class="btn btn-md btn-primary" style="margin:10px">Editar informações de cadastro</button></a> <br>
           <a href="{% url 'EditarSenha' %}"><button class="btn btn-md btn-primary" style="margin:10px">Alterar Senha</button></a> <br>
           <a href="" data-toggle="modal" data-target="#myModal">
-             <button class="btn btn-md btn-primary" style="margin:10px">Contatar um administrador</button></a>
+             <button class="btn btn-md btn-primary" style="margin:10px">Contatar um administrador</button></a> <br>
+          <a href="{% url 'CancelarCadastro' %}"><button class="btn btn-md btn-primary" style="margin:10px">Cancelar cadastro</button></a>
           <br>
         </div>
       </div>
