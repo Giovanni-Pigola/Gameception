@@ -24,8 +24,8 @@
               Digital, Número do pedido: {{pedido_recente.numero}}<br>
               {% for chave in chaves %}
               <div class="">
-                <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{chave.jogo.img1}}/header.jpg?t={{chave.jogo.img2}}" alt="{{chave.jogo.nome}}"><br>
-                <div class="">
+                <div class="thumbnail" style="border:1px white;">
+                <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{chave.jogo.img1}}/header.jpg?t={{chave.jogo.img2}}" alt="{{chave.jogo.nome}}" style="width: 460px; height: 215px"><br>
                   {{chave.jogo.nome}}<br>
                   Chave Download: {{chave.chave}}<br>
                 </div>
@@ -37,11 +37,9 @@
               {% else %}
               Física<br>
               {% for jogo in pedido_recente.jogosPedidos.all %}
-              <div class="">
-                <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" alt="{{jogo.nome}}" /><br>
-                <div class="">
-                  {{jogo.nome}}
-                </div>
+              <div class="thumbnail" style="border:1px white;">
+                <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" alt="{{jogo.nome}}" style="width: 460px; height: 215px"><br>
+                {{jogo.nome}}
               </div>
               {% endfor %}
               Código de rastreamento: {{pedido_recente.codigoRastreamento}}<br>
