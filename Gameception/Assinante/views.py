@@ -237,7 +237,7 @@ def ContatoAdmin(request):
             print(nome, email, assunto, menssagem)
     else:
         form = ContatoAdminForm()
-    return render(request, 'Assinante/Assinante.html', {'form': form})
+    return render(request, 'Assinante/ContatoAdmin.html', {'form': form})
 
 def InfoPagamento(request):
     finalizado = False
