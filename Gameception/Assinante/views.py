@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django import forms
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 
 from .models import Assinante
 from .models import EnderecoAssinatura
@@ -242,7 +243,9 @@ def ContatoAdmin(request):
             email = form.cleaned_data['emailForm']
             assunto = form.cleaned_data['assuntoForm']
             menssagem = form.cleaned_data['menssagemForm']
-            print(nome, email, assunto, menssagem)
+            campo = nome + ' - ' + assunto
+            print(campo)
+            send_mail(campo, menssagem, email, ['guilherme_mierzwa@hotmail.com'])
     else:
         form = ContatoAdminForm()
     return render(request, 'Assinante/ContatoAdmin.html', {'form': form})
