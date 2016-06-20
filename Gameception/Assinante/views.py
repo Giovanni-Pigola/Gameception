@@ -55,6 +55,12 @@ def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO D
         context_dict['generos'] = []
 
     try:
+        cadastro = Assinante.objects.get(usuario=request.user)
+        context_dict['cadastro_completo'] = True
+    except:
+        context_dict['cadastro_completo'] = False
+
+    try:
         historico = HistoricoJogos.objects.get(assinatura=request.user)
         pedidos = Pedido.objects.filter(historico=historico)
         if len(pedidos) > 0:
@@ -76,7 +82,7 @@ def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO D
 
     form = ContatoAdminForm()
 
-    context_dict['dados_completos'] = context_dict['tem_infos_endereco'] and context_dict['tem_infos_pagamento']
+    context_dict['dados_completos'] = context_dict['tem_infos_endereco'] and context_dict['tem_infos_pagamento'] and context_dict['cadastro_completo']
     context_dict['form'] = form
 
     return render(request, 'Assinante/Assinante.html', context_dict)
@@ -195,7 +201,10 @@ def EditarCadastro(request):
         userAt = User.objects.get(username=request.user.username)
         form = UserFormA(data=request.POST,instance=userAt)
         form.save()
-        assinante = Assinante.objects.get(usuario=request.user)
+        try:
+            assinante = Assinante.objects.get(usuario=request.user)
+        except:
+            assinante = Assinante.objects.create(usuario=request.user)
         assinante_form = AssinanteForm(data=request.POST,instance=assinante)
         assinante_form.save()
         registrado = True
@@ -208,7 +217,6 @@ def EditarCadastro(request):
             assinante = Assinante.objects.get(usuario=request.user)
             assinante_form = AssinanteForm(initial={'CPF': assinante.CPF, 'nome': assinante.nome, 'telefone': assinante.telefone})
         except:
-            assinante = Assinante.objects.create(usuario=request.user)
             assinante_form = AssinanteForm()
     return render(request, 'Assinante/EditarCadastro.html', {'registrado' : registrado, 'form' : form, 'assinante_form': assinante_form})
 
@@ -372,6 +380,39 @@ def Cadastro(request):
             'Assinante/Cadastro.html',
             {'user_form': user_form, 'registrado': registrado, 'assinante_form' : assinante_form} )
 
+def CancelarCadastro(request):
+    cancelado = False
+    if request.method == 'POST':
+        form = CancelarCadastroForm(request.POST)
+        if form.is_valid():
+            cancelado = form.cleaned_data['canceladoForm']
+            if cancelado:
+                user = request.user
+                logout(request)
+                try:
+                    User.objects.get(username=user.username).delete()
+                except:
+                    pass
+                try:
+                    Assinante.objects.get(usuario=user).delete()
+                except:
+                    pass
+                try:
+                    EnderecoAssinatura.objects.get(assinatura=user).delete()
+                except:
+                    pass
+                try:
+                    DadosAssinatura.objects.get(assinatura=user).delete()
+                except:
+                    pass
+                try:
+                    DadosBancarios.objects.get(assinatura=user).delete()
+                except:
+                    pass
+    else:
+        form = CancelarCadastroForm()
+    return render(request, 'Assinante/CancelarCadastro.html', {'form': form, 'cancelado': cancelado})
+
 def user_login(request):
 
     if request.method == 'POST':
@@ -476,3 +517,6 @@ class ContatoAdminForm(forms.Form):
         super(ContatoAdminForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+
+class CancelarCadastroForm(forms.Form):
+    canceladoForm = forms.BooleanField()
