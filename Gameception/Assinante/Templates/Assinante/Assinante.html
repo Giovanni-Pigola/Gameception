@@ -11,20 +11,20 @@
 
     <div class="row placeholders">
 
-      <div class="col-xs-12 col-sm-6 placeholder">
+      <div class="col-xs-12 col-sm-6">
         <div class="panel panel-primary">
           <div class="panel-heading">
             <h3 class="panel-title">Meu histórico de Jogos</h3>
           </div>
             {% if tem_pedido_para_mostrar %}
 
-              Entrega de {{pedido_recente.data}}
+              Entrega de {{pedido_recente.data}}<br>Mídia:
 
               {% if digital %}
-              dig {{pedido_recente.numero}}<br>
+              Digital, Número do pedido: {{pedido_recente.numero}}<br>
               {% for chave in chaves %}
               <div class="">
-                <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{chave.jogo.img1}}/header.jpg?t={{chave.jogo.img2}}" alt="{{chave.jogo.nome}}" /><br>
+                <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{chave.jogo.img1}}/header.jpg?t={{chave.jogo.img2}}" style="width: 460px; height: 215px"><br>
                 <div class="">
                   {{chave.jogo.nome}}<br>
                   Chave Download: {{chave.chave}}<br>
@@ -35,7 +35,7 @@
             <button class="btn btn-md btn-primary" style="margin:10px">Ver minhas outras entregas</button></a>
 
               {% else %}
-              fis <br>
+              Física<br>
               {% for jogo in pedido_recente.jogosPedidos.all %}
               <div class="">
                 <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" alt="{{jogo.nome}}" /><br>
