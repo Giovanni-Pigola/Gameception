@@ -5,7 +5,8 @@
 
     {% if registrado %}
 
-      Suas informações foram alteradas com sucesso!
+        Suas informações foram alteradas com sucesso!<br>
+        <a href="{% url 'MinhaConta' %}"><button class="btn btn-md btn-primary" style="margin:10px">Voltar a sua conta</button></a><br>
 
     {% else %}
 

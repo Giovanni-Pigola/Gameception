@@ -5,7 +5,9 @@
 
   {% if registrado %}
 
-      Obrigado por registrar-se! <a href="{% url 'Login' %}"> Faça seu login </a> e visite sua conta!
+        Obrigado por registrar-se!<br>
+        Por favor realize o login para visitar sua conta.<br>
+        <a href="{% url 'Login' %}"><button class="btn btn-md btn-primary" style="margin:10px">Ir para tela de login</button></a>
 
   {% else %}
 

@@ -4,7 +4,8 @@
 
     {% if finalizado %}
 
-        Os dados bancarios foram armazenados com sucesso. <a href="{% url 'MinhaConta' %}">Voltar à sua página de assinante</a>
+        Os dados bancarios foram armazenados com sucesso.<br>
+        <a href="{% url 'MinhaConta' %}"><button class="btn btn-md btn-primary" style="margin:10px">Voltar a sua conta</button></a><br />
 
     {% else %}
         <form role="form" action="/Assinante/InfoPagamento/" method="post">

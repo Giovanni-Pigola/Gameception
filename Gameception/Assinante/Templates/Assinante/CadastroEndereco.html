@@ -3,8 +3,8 @@
 {% block content %}
 
     {% if registrado %}
-        Obrigado por registrar seu endereço!<br/>
-        <a href="{% url 'MinhaConta' %}">voltar para a sua conta</a><br />
+        Obrigado por registrar seu endereço!<br>
+        <a href="{% url 'MinhaConta' %}"><button class="btn btn-md btn-primary" style="margin:10px">Voltar a sua conta</button></a><br>
 
     {% else %}
         <form role="form" action="/Assinante/Endereco/" method="post">
