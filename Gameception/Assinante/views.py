@@ -74,9 +74,10 @@ def MinhaConta(request): #O NOME DESSA FUNCAO DEVE SER O MESMO DO .HTML, SENAO D
     except:
         context_dict['tem_pedido_para_mostrar'] = False
 
+    form = ContatoAdminForm()
+
     context_dict['dados_completos'] = context_dict['tem_infos_endereco'] and context_dict['tem_infos_pagamento']
-
-
+    context_dict['form'] = form
 
     return render(request, 'Assinante/Assinante.html', context_dict)
 # esse nome no final (endereco) vai ser referenciado no .html pra mostrar os dados
@@ -224,6 +225,20 @@ def EditarSenha(request):
         form = UserFormB()
     return render(request, 'Assinante/EditarSenha.html', {'registrado' : registrado, 'form' : form})
 
+
+def ContatoAdmin(request):
+    if request.method == 'POST':
+        form = ContatoAdminForm(request.POST)
+        if form.is_valid():
+            nome = form.cleaned_data['nomeForm']
+            email = form.cleaned_data['emailForm']
+            assunto = form.cleaned_data['assuntoForm']
+            menssagem = form.cleaned_data['menssagemForm']
+            print(nome, email, assunto, menssagem)
+    else:
+        form = ContatoAdminForm()
+    return render(request, 'Assinante/Assinante.html', {'form': form})
+
 def InfoPagamento(request):
     finalizado = False
     if request.method == 'POST':
@@ -333,9 +348,6 @@ def Assinatura(request):
         except:
             pass
     return render(request, 'Assinante/Assinatura.html', {'form': form, 'registrado': registrado})
-
-def ContatoAdmin(request):
-    return render(request, 'Assinante/ContatoAdmin.html', {})
 
 def Cadastro(request):
     registrado = False
@@ -456,5 +468,11 @@ class InfoPagamentoForm(forms.Form):
     vencimentoForm = forms.CharField(label='Ano de vencimento', max_length=4, min_length=4)
 
 class ContatoAdminForm(forms.Form):
-    assunto = forms.CharField(label='Assunto')
-    menssagem = forms.CharField(label='Menssagem')
+    nomeForm = forms.CharField(label='nome', widget=forms.TextInput(attrs={'placeholder': 'Nome'}))
+    emailForm = forms.EmailField(label='email', required=True, widget=forms.TextInput(attrs={'placeholder': 'E-mail'}))
+    assuntoForm = forms.CharField(label='Assunto', widget=forms.TextInput(attrs={'placeholder': 'Assunto'}))
+    menssagemForm = forms.CharField(label='Menssagem', max_length=2000, required=True, widget=forms.Textarea)
+    def __init__(self, *args, **kwargs):
+        super(ContatoAdminForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
