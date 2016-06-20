@@ -166,31 +166,36 @@
                 <h4 class="modal-title" id="myModalLabel">Escreva sua mensagem</h4>
               </div>
               <div class="modal-body">
-                  <form role="form" action="#" method="post">
+                  <form role="form" action="{% url 'MinhaConta' %}ContatoAdmin/" method="post">
                       {% csrf_token %}
 
+                      {{ form.non_field_errors }}
+
                       <strong>Nome:</strong><br>
-                      <input class="form-control" type="text" name="firstname" placeholder="Nome">
+                      {{ form.nomeForm.errors }}
+                      {{ form.nomeForm }}
                       <br>
+
                       <strong>E-Mail:</strong><br>
-                      <input class="form-control" type="text" name="email" placeholder="E-Mail">
+                      {{ form.emailForm.errors }}
+                      {{ form.emailForm }}
                       <br>
 
-                      <label for="{{ form.assuntoForm.id_for_label }}">Assunto:</label>
+                      <strong>Assunto:</strong><br>
                       {{ form.assuntoForm.errors }}
-                      <input class="form-control"  id="{{ form.assuntoForm.id_for_label }}" name="assuntoForm" type="text"  placeholder="Assunto" {% if form.assuntoForm.value != None %}value="{{ form.assuntoForm.value }}" {% endif %}/>
-
+                      {{ form.assuntoForm }}
                       <br>
 
-                      <label for="{{ form.menssagemForm.id_for_label }}">Mensagem:</label>
+                      <strong>Menssagem:</strong>
                       {{ form.menssagemForm.errors }}
-                      <textarea class="form-control"  id="{{ form.menssagemForm.id_for_label }}" name="menssagemForm" type="text"  placeholder="Mensagem" {% if form.menssagemForm.value != None %}value="{{ form.menssagemForm.value }}" {% endif %} rows="4" cols="50"></textarea>
-                  </form>
+                      {{ form.menssagemForm }}
+                      <br>
+                      <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
 
+                  </form>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
               </div>
             </div>
           </div>
