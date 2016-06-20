@@ -125,3 +125,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_HOST_USER = 'postmaster@sandboxb6d10816b8dd4e879770c4861a6ce345.mailgun.org'
+EMAIL_HOST_PASSWORD = 'dacab476eb67c5d086f453de7972edc0'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
