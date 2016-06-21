@@ -15,13 +15,13 @@
             {% csrf_token %}
             <h1>Redefinir Senha</h1>
 
+            {{ form.non_field_errors }}
+
+            <strong>Insira o e-mail da conta que deseja recuperar a senha:</strong><br><br>
             {% if invalido %}
                 Não existe nenhuma conta cadastrada no e-mail inserido.<br><br>
             {% endif %}
 
-            {{ form.non_field_errors }}
-
-            <strong>Insira o e-mail da conta que deseja recuperar a senha:</strong><br><br>
             {{form.emailForm.errors}}
             {{form.emailForm}}
             <br>
