@@ -20,22 +20,22 @@
                 <br><br>
                 <p>Descrição:</p>
                 <p>{{ jogo.descricao }}</p>
-                </div>
+            </div>
         </div>
     </div>
     {% endfor %}
 
     <nav style="text-align: center;">
         <ul class="pagination">
-            <li><a href="{% url 'Acervo' %}/{{genero}}/{{antpagina}}/" aria-label="Previous" style="width: 39px; height: 35px"><span aria-hidden="true">&laquo;</span></a></li>
+            <li><a href="{% url 'Acervo' %}/{{genero}}/{{antpagina}}/" aria-label="Previous" style="width: 49px; height: 35px"><span aria-hidden="true">&laquo;</span></a></li>
             {% for i in listapaginas %}
                 {% if i == pagina %}
-                    <li class="active"><a href="{% url 'Acervo' %}/{{genero}}/{{i}}/" style="width: 40px; height: 35px">{{i}}</a></li>
+                    <li class="active"><a href="{% url 'Acervo' %}/{{genero}}/{{i}}/" style="width: 50px; height: 35px">{{i}}</a></li>
                 {% else %}
-                    <li><a href="{% url 'Acervo' %}/{{genero}}/{{i}}/" style="width: 40px; height: 35px">{{i}}</a></li>
+                    <li><a href="{% url 'Acervo' %}/{{genero}}/{{i}}/" style="width: 50px; height: 35px">{{i}}</a></li>
                 {% endif %}
             {% endfor %}
-            <li><a href="{% url 'Acervo' %}/{{genero}}/{{proxpagina}}/" aria-label="Next" style="width: 39px; height: 35px"><span aria-hidden="true">&raquo;</span></a></li>
+            <li><a href="{% url 'Acervo' %}/{{genero}}/{{proxpagina}}/" aria-label="Next" style="width: 49px; height: 35px"><span aria-hidden="true">&raquo;</span></a></li>
         </ul>
     </nav>
 
