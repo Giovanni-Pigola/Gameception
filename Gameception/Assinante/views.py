@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django import forms
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
+from django.utils.crypto import get_random_string
 
 from .models import Assinante
 from .models import EnderecoAssinatura
@@ -416,8 +417,31 @@ def CancelarCadastro(request):
         form = CancelarCadastroForm()
     return render(request, 'Assinante/CancelarCadastro.html', {'form': form, 'cancelado': cancelado})
 
-def user_login(request):
+def RedefinirSenha(request):
+    finalizado = False
+    invalido = False
+    if request.method == 'POST':
+        form = RedefinirSenhaForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['emailForm']
+            senhaNova = get_random_string(length=8)
+            try:
+                usuario = User.objects.get(email=email)
+                usuario.set_password(senhaNova)
+                usuario.save()
+                send_mail('Redefinição de senha no site Gameception',
+                      'Sua senha foi redefinida para: '+senhaNova+'. Essa senha pode ser alterada a qualquer momento, para isso basta acessar o site e clicar em "Alterar Senha", através do menu "Minha Conta"',
+                      'support@gameception.com', [email])
+                finalizado = True
+            except:
+                invalido = True
+    else:
+        form = RedefinirSenhaForm()
+    return render(request, 'Assinante/RedefinirSenha.html', {'form': form, 'finalizado': finalizado, 'invalido': invalido})
 
+def user_login(request):
+    desativada = False
+    errado = False
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -428,12 +452,10 @@ def user_login(request):
                 login(request, user)
                 return HttpResponseRedirect('/Assinante/')
             else:
-                return HttpResponse(" account is disabled.")
+                desativada = True
         else:
-            print ("Invalid login details: {0}, {1}".format(username, password))
-            return HttpResponse("Invalid login details supplied.")
-    else:
-        return render(request, 'Assinante/Login.html', {})
+            errado = True
+    return render(request, 'Assinante/Login.html', {'desativada': desativada, 'errado': errado})
 
 def user_logout(request):
     logout(request)
@@ -523,3 +545,10 @@ class ContatoAdminForm(forms.Form):
 
 class CancelarCadastroForm(forms.Form):
     canceladoForm = forms.BooleanField()
+
+class RedefinirSenhaForm(forms.Form):
+    emailForm = forms.EmailField(label='email', widget=forms.TextInput(attrs={'placeholder': 'E-mail'}))
+    def __init__(self, *args, **kwargs):
+        super(RedefinirSenhaForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
