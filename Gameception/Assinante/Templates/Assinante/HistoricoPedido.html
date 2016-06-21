@@ -16,7 +16,7 @@
   <div class="row" style="float: left; padding: 20px; <!--outline-style:solid; outline-color:black;--> margin:10px">
      <div class="thumbnail">
         <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{chave.jogo.img1}}/header.jpg?t={{chave.jogo.img2}}" style="width: 460px; height: 215px">
-        <div class="caption" style="max-width:460px; height: 380px">
+        <div class="caption" style="max-width:460px; height: 450px">
           <h3>{{ chave.jogo.nome }}</h3>
           <p>Gêneros: </p>
           {% for genero in chave.jogo.listaGeneros.all %}
@@ -27,7 +27,7 @@
           <p style="text-indent:30px">{{ chave.jogo.descricao }}</p>
           <br>
           <p>
-            Ram mínima : {{chave.jogo.memRAM}} MB
+            RAM mínima : {{chave.jogo.memRAM}} MB
           </p>
           <p>
             Preço : R$ {{chave.jogo.preco}}
@@ -48,7 +48,7 @@
    <div>
      <div class="thumbnail">
        <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" style="width: 460px; height: 215px">
-       <div class="caption" style="max-width:460px; height: 300px">
+       <div class="caption" style="max-width:460px; height: 420px">
          <h3>{{ jogo.nome }}</h3>
          <p>Gêneros: </p>
          {% for genero in jogo.listaGeneros.all %}
@@ -58,7 +58,7 @@
          <p>Descrição:</p>
          <p style="text-indent:30px">{{ jogo.descricao }}</p>
          <p>
-           Ram mínima : {{jogo.memRAM}} MB
+           RAM mínima : {{jogo.memRAM}} MB
          </p>
          <p>
            Preço : R$ {{jogo.preco}}
