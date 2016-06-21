@@ -12,9 +12,12 @@
             {% csrf_token %}
             <h2 class="form-signin-heading">Assinatura</h2>
             {{ form.non_field_errors }}
-            <strong>Defina as opções de sua assinatura:</strong><br/><br/>
+            <strong>Defina as opções de sua assinatura:</strong><br><br>
             <div class="col-xs-4">
-            <strong>Gêneros de preferência:</strong><br/>
+            <strong>Gêneros de preferência: (Selecione pelo menos 3)</strong><br>
+            {% if not minimo %}
+                Você selecionou menos de 3 gêneros, escolha mais alguns.
+            {% endif %}
             {{form.generosPessoaisForm.errors}}
             {{form.generosPessoaisForm}}
 
