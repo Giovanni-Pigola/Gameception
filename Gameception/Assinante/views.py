@@ -319,6 +319,7 @@ def CadastroEndereco(request):
 
 def Assinatura(request):
     registrado = False
+    minimo = True
     if request.method == 'POST':
         form = DadosAssinaturaForm(request.POST)
         if form.is_valid():
@@ -330,21 +331,33 @@ def Assinatura(request):
             memRAM = form.cleaned_data['memRAMForm']
             processador = form.cleaned_data['processadorForm']
             memVideo = form.cleaned_data['memVideoForm']
-            try:
-                dados = DadosAssinatura.objects.get(assinatura=request.user)
-            except:
-                dados = DadosAssinatura.objects.create(assinatura=request.user)
-            dados.generosPessoais = generosPessoais
-            dados.quantidade = quantidade
-            dados.precoPorJogo = precoPorJogo
-            dados.tipoMidia = tipoMidia
-            dados.sistOp = sistOp
-            dados.memRAM = memRAM
-            dados.processador = processador
-            dados.memVideo = memVideo
-            dados.atividade = True
-            dados.save()
-            registrado = True
+            if (len(generosPessoais) > 2):
+                try:
+                    dados = DadosAssinatura.objects.get(assinatura=request.user)
+                except:
+                    dados = DadosAssinatura.objects.create(assinatura=request.user)
+                dados.generosPessoais = generosPessoais
+                dados.quantidade = quantidade
+                dados.precoPorJogo = precoPorJogo
+                dados.tipoMidia = tipoMidia
+                dados.sistOp = sistOp
+                dados.memRAM = memRAM
+                dados.processador = processador
+                dados.memVideo = memVideo
+                dados.atividade = True
+                dados.save()
+                registrado = True
+                minimo = True
+            else:
+                form.fields['generosPessoaisForm'].initial = generosPessoais
+                form.fields['quantidadeForm'].initial = quantidade
+                form.fields['precoPorJogoForm'].initial = precoPorJogo
+                form.fields['tipoMidiaForm'].initial = tipoMidia
+                form.fields['sistOpForm'].initial = sistOp
+                form.fields['memRAMForm'].initial = memRAM
+                form.fields['processadorForm'].initial = processador
+                form.fields['memVideoForm'].initial = memVideo
+                minimo = False
     else:
         form = DadosAssinaturaForm()
         try:
@@ -359,7 +372,7 @@ def Assinatura(request):
             form.fields['memVideoForm'].initial = dados.memVideo
         except:
             pass
-    return render(request, 'Assinante/Assinatura.html', {'form': form, 'registrado': registrado})
+    return render(request, 'Assinante/Assinatura.html', {'form': form, 'registrado': registrado, 'minimo': minimo})
 
 def Cadastro(request):
     registrado = False
