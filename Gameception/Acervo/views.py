@@ -32,7 +32,11 @@ def filtro(request, genero, pagina):
     paginas = math.ceil(len(listajogos)/48)
     listapaginas = []
     for i in range(pagina-4, pagina+5):
-        if (i>0):
-            listapaginas.append(i)
+        if (i > 0):
+            if(i <= paginas):
+                listapaginas.append(i)
+        else:
+            listapaginas.append(i+9)
+    listapaginas.sort()
     generos = Genero.objects.all()
     return render(request, 'Acervo/Acervo.html', {'generos' : generos, 'jogos' : jogos, 'listapaginas': listapaginas, 'antpagina': (pagina-1), 'proxpagina': (pagina+1), 'genero': genero, 'pagina': pagina})
