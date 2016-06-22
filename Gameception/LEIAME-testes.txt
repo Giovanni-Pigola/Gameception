@@ -1,0 +1,4 @@
+1- Acessar computador "Labsoft 23", e logar em 'cursos', onde o Django está instalado;
+2- Abrir a pasta "Gameception" na Área de Trabalho;
+3- Clicar em "runserver.bat".
+4- Se a página não carregar imediatamente, espere alguns segundos pressione F5.
