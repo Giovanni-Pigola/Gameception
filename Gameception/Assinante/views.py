@@ -440,11 +440,11 @@ def RedefinirSenha(request):
             senhaNova = get_random_string(length=8)
             try:
                 usuario = User.objects.get(email=email)
+                send_mail('Redefinição de senha no site Gameception',
+                          'Sua senha foi redefinida para: ' + senhaNova + '. Essa senha pode ser alterada a qualquer momento, para isso basta acessar o site e clicar em "Alterar Senha", através do menu "Minha Conta"',
+                          'support@gameception.com', [email])
                 usuario.set_password(senhaNova)
                 usuario.save()
-                send_mail('Redefinição de senha no site Gameception',
-                      'Sua senha foi redefinida para: '+senhaNova+'. Essa senha pode ser alterada a qualquer momento, para isso basta acessar o site e clicar em "Alterar Senha", através do menu "Minha Conta"',
-                      'support@gameception.com', [email])
                 finalizado = True
             except:
                 invalido = True
