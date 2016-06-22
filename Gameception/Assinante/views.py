@@ -202,14 +202,15 @@ def EditarCadastro(request):
     if request.method == 'POST':
         userAt = User.objects.get(username=request.user.username)
         form = UserFormA(data=request.POST,instance=userAt)
-        form.save()
         try:
             assinante = Assinante.objects.get(usuario=request.user)
         except:
             assinante = Assinante.objects.create(usuario=request.user)
-        assinante_form = AssinanteForm(data=request.POST,instance=assinante)
-        assinante_form.save()
-        registrado = True
+        assinante_form = AssinanteForm(data=request.POST, instance=assinante)
+        if form.is_valid() and assinante_form.is_valid():
+            form.save()
+            assinante_form.save()
+            registrado = True
     else:
         try:
             form = UserFormA(initial={'username': request.user.username, 'email' : request.user.email})
