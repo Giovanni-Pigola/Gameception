@@ -4,40 +4,44 @@
 
 {% block content %}
 
-
-    {% for jogo in jogos %}
-    <div class="row" style="float: left; padding: 20px; <!--outline-style:solid; outline-color:black;--> margin:10px" >
-        <div class="thumbnail">
-            <img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" style="width: 460px; height: 215px">
-            <div class="caption" style="max-width:460px; height: 300px">
-                <h3>{{ jogo.nome }}</h3>
-                <p>Gêneros: </p>
-                <p style="display: inline">
-                {% for genero in jogo.listaGeneros.all %}
-                    {{ genero.nome }};
-                {% endfor %}
-                </p>
-                <br><br>
-                <p>Descrição:</p>
-                <p>{{ jogo.descricao }}</p>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
-
-    <nav style="text-align: center;">
-        <ul class="pagination">
-            <li><a href="{% url 'Acervo' %}/{{genero}}/{{antpagina}}/" aria-label="Previous" style="width: 49px; height: 35px"><span aria-hidden="true">&laquo;</span></a></li>
-            {% for i in listapaginas %}
-                {% if i == pagina %}
-                    <li class="active"><a href="{% url 'Acervo' %}/{{genero}}/{{i}}/" style="width: 50px; height: 35px">{{i}}</a></li>
-                {% else %}
-                    <li><a href="{% url 'Acervo' %}/{{genero}}/{{i}}/" style="width: 50px; height: 35px">{{i}}</a></li>
-                {% endif %}
-            {% endfor %}
-            <li><a href="{% url 'Acervo' %}/{{genero}}/{{proxpagina}}/" aria-label="Next" style="width: 49px; height: 35px"><span aria-hidden="true">&raquo;</span></a></li>
-        </ul>
-    </nav>
+	
+		{% for jogo in jogos %}
+		<div class="row" style="float: left; padding: 20px; <!--outline-style:solid; outline-color:black;--> margin:10px" >
+			<div class="thumbnail">
+				<img src="http://cdn.akamai.steamstatic.com/steam/apps/{{jogo.img1}}/header.jpg?t={{jogo.img2}}" style="width: 460px; height: 215px">
+				<div class="caption" style="max-width:460px; height: 300px">
+					<h3>{{ jogo.nome }}</h3>
+					<p>Gêneros: </p>
+					<p style="display: inline">
+					{% for genero in jogo.listaGeneros.all %}
+						{{ genero.nome }};
+					{% endfor %}
+					</p>
+					<br><br>
+					<p>Descrição:</p>
+					<p>{{ jogo.descricao }}</p>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	
+	
+	<footer style="position: absolute; bottom: 0px; left: 25%;">
+	
+			<nav>
+				<ul class="pagination"><br><br>
+					<li><a href="{% url 'Acervo' %}/{{genero}}/{{antpagina}}/" aria-label="Previous" style="width: 49px; height: 35px"><span aria-hidden="true">&laquo;</span></a></li>
+					{% for i in listapaginas %}
+						{% if i == pagina %}
+							<li class="active"><a href="{% url 'Acervo' %}/{{genero}}/{{i}}/" style="width: 50px; height: 35px">{{i}}</a></li>
+						{% else %}
+							<li><a href="{% url 'Acervo' %}/{{genero}}/{{i}}/" style="width: 50px; height: 35px">{{i}}</a></li>
+						{% endif %}
+					{% endfor %}
+					<li><a href="{% url 'Acervo' %}/{{genero}}/{{proxpagina}}/" aria-label="Next" style="width: 49px; height: 35px"><span aria-hidden="true">&raquo;</span></a></li>
+				</ul>
+			</nav>
+	</footer>
 
 {% endblock %}
 
