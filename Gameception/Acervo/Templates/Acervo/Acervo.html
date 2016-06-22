@@ -28,7 +28,7 @@
 	
 	<footer style="position: absolute; bottom: 0px; left: 25%;">
 	
-			<nav>
+			<nav style="text-align: center">
 				<ul class="pagination"><br><br>
 					<li><a href="{% url 'Acervo' %}/{{genero}}/{{antpagina}}/" aria-label="Previous" style="width: 49px; height: 35px"><span aria-hidden="true">&laquo;</span></a></li>
 					{% for i in listapaginas %}
@@ -50,11 +50,11 @@
 
     <h3>Categorias de jogos:</h3>
     <a href="{% url 'Acervo' %}/Todos/1">
-        <button class="btn btn-primary btn-md" style="margin:10px;width:200px;text-align: center">Todos</button></a>
+        <button class="btn btn-primary btn-md" style="margin:10px;width:150px;text-align: center">Todos</button></a>
     <br>
     {% for genero in generos %}
         <a href="{% url 'Acervo' %}/{{genero.nome}}/1/">
-            <button class="btn btn-primary btn-md" style="margin:10px;width:200px;text-align: center">{{genero.nome}}</button>
+            <button class="btn btn-primary btn-md" style="margin:10px;width:150px;text-align: center">{{genero.nome}}</button>
         </a>
     {% endfor %}
 
