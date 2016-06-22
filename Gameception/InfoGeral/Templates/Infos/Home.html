@@ -1,25 +1,22 @@
 {% extends "MainPage.html" %}
 
+{% block title %}Home{% endblock %}
+
+{% load staticfiles %}
+
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+
     <div class="jumbotron">
-        <h1>Bem vindo a GAMECEPTION!</h1>
+        <h1>Bem-vindo a GAMECEPTION!</h1>
         <p>
             A sua plataforma online de assinatura personalizada de jogos. Onde você poderá personalizar seu perfil e 
             todo mês será surpreendido com produtos escolhidos por nós para melhor se adequarem a suas preferencias.<br>
             Assine agora para ir mais fundo no mundo dos games!
         </p>
         <!--img src="http://dazedimg.dazedgroup.netdna-cdn.com/786/azure/dazed-prod/1120/2/1122563.jpg" alt="inception spinning top" style="width:650px;height:350px;"-->
-        <img src="https://i.kinja-img.com/gawker-media/image/upload/s--a3YtQ3Zd--/c_scale,fl_progressive,q_80,w_800/196opfgjbhn16jpg.jpg" alt="inception spinning top" style="width:650px;height:350px;">
+
         <br> <br>
-        <a class="btn btn-primary btn-lg" href="{% url 'Sobre' %}" role="button">Saiba Mais</a></p>
-</div>
-</body>
-</html>
+        <a class="btn btn-primary btn-lg" href="{% url 'Sobre' %}" role="button">Saiba Mais</a>
+    </div>
+
 {% endblock %}
