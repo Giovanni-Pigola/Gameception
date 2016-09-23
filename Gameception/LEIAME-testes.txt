@@ -2,5 +2,5 @@
 2- Abrir a pasta "Gameception" na Área de Trabalho;
 3- Clicar em "runserver.bat".
 4- Se a página não carregar imediatamente, espere alguns segundos pressione F5.
-5- O código do sistema está inteiro na pasta Gameception também.
+
 6-
